@@ -346,6 +346,11 @@ export const asyncRouterMap = [
  */
 export const constantRouterMap = [
   {
+    path: '/homePage',
+    name: 'homePage',
+    component: () => import(/* webpackChunkName: "user" */ '@/views/home/homePage')
+  },
+  {
     path: '/user',
     component: UserLayout,
     redirect: '/user/login',
