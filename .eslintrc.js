@@ -5,9 +5,10 @@ module.exports = {
   },
   'extends': [
     'plugin:vue/strongly-recommended',
-    '@vue/standard'
+    // '@vue/standard'
   ],
   rules: {
+    'linebreak-style': [0, 'error', 'windows'],
     'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'generator-star-spacing': 'off',
@@ -18,7 +19,7 @@ module.exports = {
         'singleline': 5,
         'multiline': {
           'max': 1,
-          'allowFirstLine': false
+          'allowFirstLine': true
         }
       }
     ],
