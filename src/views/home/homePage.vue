@@ -21,7 +21,7 @@
     <!-- 轮播图 end -->
     <!-- 推荐书目 start-->
     <div class="recommendBook">
-      <!-- <div class="imgList">
+      <div class="imgList">
         <ul>
           <li class="list1"><img src="./images/0.jpg"
               alt=""></li>
@@ -44,15 +44,7 @@
         <span style="margin:0 10px"></span>
       </div>
       <div class="btnleft">《</div>
-      <div class="btnright">》</div> -->
-      <el-carousel :interval="4000"
-        type="card"
-        height="200px">
-        <el-carousel-item v-for="item in 6"
-          :key="item">
-          <h3 class="medium">{{ item }}</h3>
-        </el-carousel-item>
-      </el-carousel>
+      <div class="btnright">》</div>
     </div>
     <!-- 推荐书目 end-->
     <!-- 功能区 start -->
@@ -77,6 +69,8 @@
 export default {
   data() {
     return {
+      aLiName: ['list1', 'list2', 'list3', 'list4', 'list5', 'list6'],
+      index: 0,
       imgIndex: 0,
       timer: null,
       bookList: ['./images/0.jpg', './images/1.jpg', './images/2.jpg', './images/3.jpg', './images/4.jpg'],
@@ -84,6 +78,7 @@ export default {
     }
   },
   mounted() {
+    this.setLineColor()
     this.imagePlay()
   },
   // watch() {},
@@ -100,6 +95,18 @@ export default {
           }
         }, 4000)
       }
+    },
+    setLineColor() {
+      var aSpan = document.querySelectorAll('span')
+      for (var i = 0; i < aLi.length; i++) {
+        aSpan[i].style.backgroundColor = '#ccc'
+      }
+      aSpan[this.index].style.backgroundColor = '#45c17c'
+    },
+    nextPic() {
+      var aLi = document.querySelectorAll('li')
+      this.aLiName.unshift(this.aLiName[5]) //把最后一个值放到第一的位置
+      this.aLiName.pop() //删除最后一个值
     },
   },
 }
@@ -123,13 +130,6 @@ img {
     width: 100%;
     height: 300px;
   }
-}
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 14px;
-  opacity: 0.75;
-  line-height: 200px;
-  margin: 0;
 }
 .recommendBook {
   position: relative;
