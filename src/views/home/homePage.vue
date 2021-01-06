@@ -1,121 +1,182 @@
 <template>
-  <div id="homePage">
-    <!-- 表头start -->
-    <header>
-      <a-row class="header">
-        <a-col :span="12">
-          <img src="./images/head.jpg">
-          <span class="name">数字图书馆 </span>
-        </a-col>
-        <a-col :span="12" class="option">
-          <a-dropdown>
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-              首页
-            </a>
-          </a-dropdown>
-          <a-dropdown>
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-              在线阅读
-            </a>
-          </a-dropdown>
-          <a-dropdown>
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-              服务
-            </a>
-          </a-dropdown>
-          <a-dropdown>
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-              关于我们
-            </a>
-          </a-dropdown>
-        </a-col>
-      </a-row>
-    </header>
-    <!-- 表头 end -->
-    <!-- 轮播图 start -->
-    <div class="slideshow">
-      <img class="image" :src="require(`./images/${imgIndex}.jpg`)">
-      <!-- <img class="image"
-        :src="require(`./images/2.jpg`)"> -->
+  <div class="homePage">
+    <div class="navigationBar">
+      <!-- 导航栏左侧功能按钮 -->
+      <div class="btn">
+        <a-button type="primary">
+          登录
+        </a-button>
+        <a-button type="primary" style="margin:0 20px">
+          注册
+        </a-button>
+        <a-button type="dashed">
+          续借
+        </a-button>
+      </div>
+      <a-menu v-model="current" mode="horizontal">
+        <a-menu-item key="mail">
+          <a-icon type="bank" />首页
+        </a-menu-item>
+        <a-menu-item key="app">
+          <a-icon type="appstore" />在线阅读
+        </a-menu-item>
+        <a-sub-menu>
+          <span slot="title" class="submenu-title-wrapper">
+            <a-icon type="setting" />服务
+          </span>
+          <a-menu-item-group title="Item 1">
+            <a-menu-item key="setting:1">
+              Option 1
+            </a-menu-item>
+            <a-menu-item key="setting:2">
+              Option 2
+            </a-menu-item>
+          </a-menu-item-group>
+          <a-menu-item-group title="Item 2">
+            <a-menu-item key="setting:3">
+              Option 3
+            </a-menu-item>
+            <a-menu-item key="setting:4">
+              Option 4
+            </a-menu-item>
+          </a-menu-item-group>
+        </a-sub-menu>
+        <a-menu-item key="alipay">
+          <a href="https://antdv.com" target="_blank" rel="noopener noreferrer">关于吉珠数字图书馆</a>
+        </a-menu-item>
+      </a-menu>
     </div>
-    <!-- 轮播图 end -->
-    <!-- 推荐书目 start-->
-    <div class="recommendBook">
-      <swiper :options="swiperOption" class="swiper-container">
-        <swiper-slide class="swiper-slide" v-for="(item,index) in bookList" :key="index">
-          <img :src="require(`./images/${index}.jpg`)" alt="">
+    <div class="swiper-container" >
+      <swiper class="swiper-wrapper" :options="swiperOption">
+        <swiper-slide class="swiper-slide">
+          <!-- 轮播图第一页（首页） -->
+          <div class="firstPage">
+            <!-- 导航栏 -->
+            <div class="logo">
+              <div class="logo-title">
+                <span class="logo-img">
+                  <img src="./images/logo.png" alt="">
+                </span>
+                <div class="logo-text">
+                  <p>吉林大学珠海学院 数字图书馆</p>
+                  <p>JLZHUNIVERSITY LIBRARY</p>
+                </div>
+              </div>
+              <div class="search">
+                <a-dropdown>
+                  <a-button style="border-radius:12px">书籍类型</a-button>
+                  <a-menu slot="overlay">
+                    <a-menu-item>
+                      <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">在线阅读</a>
+                    </a-menu-item>
+                    <a-menu-item>
+                      <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">借阅书籍</a>
+                    </a-menu-item>
+                  </a-menu>
+                </a-dropdown>
+                <a-input-search placeholder="input search text" enter-button style="width:500px;margin:0 10px" />
+              </div>
+            </div>
+          </div>
         </swiper-slide>
+        <swiper-slide class="swiper-slide">
+          <div class="secondPage">
+            <!-- 新书推荐 -->
 
+            <div class="recommend">
+              <swiper :options="bookSwiperOption" class="swiper-container">
+                <swiper-slide class="swiper-slide" v-for="(item,index) in bookList" :key="index">
+                  <img style="width:180px;height:180px" :src="require(`./images/${index}.jpg`)" alt="">
+                </swiper-slide>
+              </swiper>
+            </div>
+            <!-- 书籍排行榜 -->
+            <a-row :gutter="24" type="flex" justify="center">
+              
+              <a-col :span="8" >
+                <div class="bookRank">
+                  <p class="title">书籍热搜榜</p>
+                  <a-list item-layout="horizontal" :data-source="rangList">
+                    <a-list-item slot="renderItem" slot-scope="item">
+                      <a-list-item-meta :description="item.description">
+                        <a slot="title" href="https://www.antdv.com/">{{ item.title }}</a>
+                        <img style="width:50px;height:50px" slot="avatar" src="./images/book1.jpg" />
+                      </a-list-item-meta>
+                    </a-list-item>
+                  </a-list>
+                </div>
+              </a-col>
+              <a-col :span="8">
+                <div class="lover">
+                  <a-card title="猜你喜欢">
+                    <a slot="extra" href="#">更多</a>
+                    <div class="loverDetail">
+
+                    </div>
+                  </a-card>
+                </div>
+              </a-col>
+            </a-row>
+          </div>
+        </swiper-slide>
+        <swiper-slide class="swiper-slide">
+          <div class="thirdPage">
+            <a-row>
+              <a-col :span="12">
+                <a-card title="关于我们" class="about">
+                  <a slot="extra" href="#">more</a>
+                  <img class="aboutImage" src="./images/首页.jpg" alt="">
+                  <p>吉林大学珠海学院（Zhuhai College of Jilin University），简称“吉珠”，坐落于经济特区广东省珠海市，处于粤港澳大湾区腹地，是由吉林大学与珠海市华政教育投资有限公司合作建设的独立学院</p>
+                  <p>吉林大学珠海学院图书馆的前身为吉林大学珠海校区图书馆，随着吉林大学珠海软件学院于2003年9月成立于9月8日正式开馆.吉林大学珠海学院新图书馆在学院董事长和学院领导的高度重视下，在全院读者的期盼下，于2009年9月正式投入使用。建筑面积54000平方米。</p>
+                </a-card>
+              </a-col>
+              <a-col :span="12">
+                <a-card class="optionCard">
+                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
+                    Content
+                  </a-card-grid>
+                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
+                    Content
+                  </a-card-grid>
+                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
+                    Content
+                  </a-card-grid>
+                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
+                    Content
+                  </a-card-grid>
+                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
+                    Content
+                  </a-card-grid>
+                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
+                    Content
+                  </a-card-grid>
+                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
+                    Content
+                  </a-card-grid>
+                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
+                    Content
+                  </a-card-grid>
+                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
+                    Content
+                  </a-card-grid>
+                </a-card>
+              </a-col>
+            </a-row>
+          </div>
+        </swiper-slide>
+        <swiper-slide class="swiper-slide">Slide 4</swiper-slide>
+        <swiper-slide class="swiper-slide">Slide 5</swiper-slide>
       </swiper>
-
+      <!-- Add Pagination -->
+      <div class="swiper-pagination" slot="pagination"></div>
     </div>
-    <!-- 推荐书目 end-->
-    <!-- 功能区 start -->
-    <div class="module">
-      <a-row>
-        <a-col :span="10">
-          <!-- 书籍榜单 start -->
-          <div class="rangList">
-            <p class="title"><img style="width:50px;height:50px" src="./images/热门推荐.png">书籍热搜榜</p>
-            <a-list item-layout="horizontal" :data-source="rangList">
-              <a-list-item slot="renderItem" slot-scope="item">
-                <a-list-item-meta :description="item.description">
-                  <a slot="title" href="https://www.antdv.com/">{{ item.title }}</a>
-                  <img style="width:50px;height:50px" slot="avatar" src="./images/book1.jpg" />
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-          </div>
-          <!-- 书籍榜单 end -->
-        </a-col>
-        <!-- 服务指南 start -->
-        <div class="service">
-          <div class="title">读者服务</div>
-          <div class="function">
-            <span class="phone"><img style="width:50px;height:50px" src="./images/手机.png">联系电话</span>
-            <span class="phone"><img style="width:50px;height:50px" src="./images/线性图书(1).png">图书推荐</span>
-            <span class="phone"><img style="width:50px;height:50px" src="./images/本子.png">预约续借</span>
-            <!-- <span class="phone"><img style="width:50px;height:50px" src="./images/电话.png">联系电话</span> -->
-          </div>
-          <div class="function">
-            <span class="phone"><img style="width:50px;height:50px" src="./images/色块－联系人.png">联系我们</span>
-            <span class="phone"><img style="width:50px;height:50px" src="./images/线性图书(1).png">图书推荐</span>
-            <span class="phone"><img style="width:50px;height:50px" src="./images/本子.png">预约续借</span>
-          </div>
-          <!-- 服务指南 end -->
-        </div>
-      </a-row>
-    </div>
-    <!-- 功能区 end -->
   </div>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
-      imgIndex: 0,
-      timer: null,
-      bookList: ['./images/0.jpg', './images/1.jpg', './images/2.jpg', './images/3.jpg', './images/4.jpg'],
-      // images: ['./images/0.jpg', './images/1.jpg', './images/2.jpg', './images/3.jpg', './images/4.jpg'],
-      //轮播图
-      swiperOption: {
-        effect: 'coverflow',
-        grabCursor: true,
-        centeredSlides: true,
-        slidesPerView: 'auto',
-        coverflowEffect: {
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        },
-        pagination: {
-          el: '.swiper-pagination',
-        },
-      },
       //书籍排行榜单
       rangList: [{
         title: '四代同堂',
@@ -136,82 +197,201 @@ export default {
         title: '三国演义',
         description: 'dsfvaedgerhrtehttgrhnytr',
         writer: 'asdfcas'
-      },]
+      }],
+      bookList: ['./images/0.jpg', './images/1.jpg', './images/2.jpg', './images/3.jpg', './images/4.jpg', './images/5.jpg', './images/6.jpg', './images/7.jpg'],
+      current: ['bank'],
+      //猜你喜欢的书籍
+      loverList: [],
+      swiperOption: {
+        direction: 'vertical',
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      },
+      bookSwiperOption: {
+        autoplay: true,
+        effect: 'coverflow',
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: 'auto',
+        coverflowEffect: {
+          rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+        },
+      },
     }
-  },
-  mounted() {
-    // this.setLineColor()
-    this.imagePlay()
-  },
-  // watch() {},
-  methods: {
-    imagePlay() {
-      if (this.timer != null) {
-        setInterval(this.timer)
-        this.timer = null
-      } else {
-        this.timer = setInterval(() => {
-          this.imgIndex += 1
-          if (this.imgIndex > 3) {
-            this.imgIndex = 0
-          }
-        }, 4000)
-      }
-    },
-  },
+  }
 }
 </script>
-<style scoped lang="less">
-.header {
-  width: 1200px;
-  height: 90px;
-  margin: 0 auto;
-  background-color: rgb(162, 24, 20);
-  // background-color: skyblue;
+
+<style lang='less' scoped>
+.ant-btn-primary {
+  background-color: skyblue;
+  border-radius: 10px;
+}
+.ant-list-item-meta {
+  margin-left: 20px;
 }
 img {
-  height: 90px;
-  width: 300px;
+  display: block;
+  width: 100%;
+  height: auto;
 }
-.name {
-  font-size: 28px;
-  color: white;
-  margin-left: 20px;
-  font-weight: 300;
-  font-weight: 500;
-  // border-left: #000 solid 2px;
+.homePage {
+  position: relative;
+  height: 100%;
 }
-.option {
-  display: flex;
-  flex-direction: row;
-  // flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 30px;
-  font-size: 20px;
-  a {
-    color: white;
-  }
-}
-.slideshow {
-  width: 1200px;
-  height: 300px;
-  margin: 0 auto;
-  text-align: center;
-  background-color: rgb(162, 24, 20);
-  .image {
-    width: 100%;
-    height: 300px;
-  }
-}
-.recommendBook {
-  width: 1200px;
-  background: rgb(162, 24, 20);
+.homePage {
+  background: #eee;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: #000;
-  margin: 10px auto;
+  margin: 0;
   padding: 0;
+}
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
 
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  .firstPage {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    // background-attachment:fixed;
+    // opacity: 0.5;
+    background-image: url(./images/首页2.png);
+    .logo-title{
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 40px;
+      justify-content: center;
+      .logo-img{
+        display: block;
+        width: 130px;
+        margin-right: 20px;
+      }
+      .logo-text{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  }
+  .secondPage {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    // background-attachment:fixed;
+    // opacity: 0.5;
+    background-image: url(./images/首页2.png);
+    .bookRank {
+      background-color: white;
+      opacity: 0.9;
+      border-radius: 12px;
+      width: 100%;
+      height: 380px;
+
+      text-align: left;
+      .title {
+        margin-left: 20px;
+        font-size: 28px;
+        padding-top: 20px;
+        margin-bottom: 5px;
+      }
+    }
+    .lover {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 12px;
+      opacity: 0.8;
+    }
+  }
+  .thirdPage {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    // background-attachment:fixed;
+    // opacity: 0.5;
+    background-image: url(./images/首页2.png);
+    .about {
+      width: 500px;
+      height: 500px;
+      margin: 200px 0 auto 400px;
+      border-radius: 16px;
+      .aboutImage {
+        width: 400px;
+        height: 200px;
+        margin-bottom: 10px;
+      }
+    }
+    .optionCard {
+      width: 500px;
+      height: 500px;
+      margin: 200px 0 auto 10px;
+    }
+  }
+}
+.navigationBar {
+  width: 100%;
+  height: 50px;
+  background-color: white;
+  // opacity: 0.8;
+  // display: inline-block;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: inherit;
+  position: fixed;
+  top: 0;
+  z-index: 3;
+  .btn {
+    margin: 10px;
+  }
+}
+.logo {
+  p {
+    font-size: 24px;
+    font-weight: 500;
+    color: white;
+    margin: 0;
+  }
+  margin: 300px;
+}
+.recommend {
+  width: 1200px;
+  // background:skyblue ;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 150px auto 0 auto;
+  padding: 0;
   .swiper-container {
     overflow: hidden;
     width: 100%;
@@ -219,40 +399,9 @@ img {
     padding-top: 40px;
     padding-bottom: 40px;
   }
-
   .swiper-slide {
     width: 300px;
     height: 200px;
-  }
-}
-.rangList {
-  width: 500px;
-  height: 500px;
-  margin: 0 auto 0 352px;
-  .title {
-    font-size: 28px;
-  }
-}
-.service {
-  width: 650px;
-  height: 300px;
-  background-color: rgb(162, 24, 20);
-  margin: 0 auto 0 900px;
-  text-align: center;
-  color: white;
-  .title {
-    font-size: 28px;
-  }
-  .function {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 50px 100px;
-    .phone {
-      display: flex;
-      flex-direction: column;
-    }
   }
 }
 </style>
