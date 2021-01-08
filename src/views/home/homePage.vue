@@ -3,10 +3,10 @@
     <div class="navigationBar">
       <!-- 导航栏左侧功能按钮 -->
       <div class="btn">
-        <a-button type="primary">
+        <a-button type="primary" @click="login">
           登录
         </a-button>
-        <a-button type="primary" style="margin:0 20px">
+        <a-button type="primary" style="margin:0 20px" @click="register">
           注册
         </a-button>
         <a-button type="dashed">
@@ -18,7 +18,7 @@
           <a-icon type="bank" />首页
         </a-menu-item>
         <a-menu-item key="app">
-          <a-icon type="appstore" />在线阅读
+          <div @click="onlineReading"><a-icon type="appstore"/>在线阅读</div>
         </a-menu-item>
         <a-sub-menu>
           <span slot="title" class="submenu-title-wrapper">
@@ -92,7 +92,6 @@
             </div>
             <!-- 书籍排行榜 -->
             <a-row :gutter="24" type="flex" justify="center">
-              
               <a-col :span="8" >
                 <div class="bookRank">
                   <p class="title">书籍热搜榜</p>
@@ -111,7 +110,6 @@
                   <a-card title="猜你喜欢">
                     <a slot="extra" href="#">更多</a>
                     <div class="loverDetail">
-
                     </div>
                   </a-card>
                 </div>
@@ -121,7 +119,7 @@
         </swiper-slide>
         <swiper-slide class="swiper-slide">
           <div class="thirdPage">
-            <a-row>
+            <a-row :gutter="24" type="flex" justify="center">
               <a-col :span="12">
                 <a-card title="关于我们" class="about">
                   <a slot="extra" href="#">more</a>
@@ -132,32 +130,9 @@
               </a-col>
               <a-col :span="12">
                 <a-card class="optionCard">
-                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
-                    Content
-                  </a-card-grid>
-                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
-                    Content
-                  </a-card-grid>
-                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
-                    Content
-                  </a-card-grid>
-                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
-                    Content
-                  </a-card-grid>
-                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
-                    Content
-                  </a-card-grid>
-                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
-                    Content
-                  </a-card-grid>
-                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
-                    Content
-                  </a-card-grid>
-                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
-                    Content
-                  </a-card-grid>
-                  <a-card-grid style="width:33.3%;text-align:center;height:166px">
-                    Content
+                  <a-card-grid style="width:33.3%;text-align:center;height:166px" v-for="(item,index) in optionList" :key="index">
+                    <div style="margin:10px 20px"><img :src="require(`./images/${item.src}.png`)"/></div>
+                    <p>{{ item.name }}</p>
                   </a-card-grid>
                 </a-card>
               </a-col>
@@ -177,6 +152,45 @@
 export default {
   data() {
     return {
+      // 服务列表
+      optionList:[
+        {
+          name:'开放时间',
+          src:'时间'
+        },
+        {
+          name:'交通指南',
+          src:'交通(1)'
+        },
+        {
+          name:'馆舍平面',
+          src:'平面图设计'
+        },
+        {
+          name:'办证须知',
+          src:'须知'
+        },
+        {
+          name:'项目服务',
+          src:'服务'
+        },
+        {
+          name:'外借规则',
+          src:'规则'
+        },
+        {
+          name:'吉珠新闻',
+          src:'新闻报纸，new'
+        },
+        {
+          name:'发展规划',
+          src:'规划'
+        },
+        {
+          name:'媒体报道',
+          src:'媒体报道'
+        },
+      ],
       //书籍排行榜单
       rangList: [{
         title: '四代同堂',
@@ -226,6 +240,18 @@ export default {
           el: '.swiper-pagination',
         },
       },
+    }
+  },
+  methods:{
+    login(){
+      this.$router.push({ path: '/user/Login' })
+    },
+    register(){
+      this.$router.push({ path: '/user/Register' })
+    },
+    onlineReading(){
+      console.log(1111)
+      this.$router.push({path:'/onlineReading'})
     }
   }
 }
@@ -350,12 +376,21 @@ img {
         width: 400px;
         height: 200px;
         margin-bottom: 10px;
+        margin-left:25px
       }
     }
     .optionCard {
       width: 500px;
       height: 500px;
       margin: 200px 0 auto 10px;
+      p{
+        font-size: 14px;
+        font-weight: 600;
+      }
+      img{
+        width: 70px;
+        height: 70px;
+      }
     }
   }
 }
