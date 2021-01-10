@@ -55,11 +55,12 @@
             <div class="logo">
               <div class="logo-title">
                 <span class="logo-img">
-                  <img src="./images/logo.png" alt="">
+                  <img src="./images/JIZHUlogo.png" alt="">
                 </span>
                 <div class="logo-text">
-                  <p>吉林大学珠海学院 数字图书馆</p>
-                  <p>JLZHUNIVERSITY LIBRARY</p>
+                  <!-- <p>吉林大学珠海学院 数字图书馆</p>
+                  <p>JLZHUNIVERSITY LIBRARY</p> -->
+                  <img src="./images/title.png" alt="">
                 </div>
               </div>
               <div class="search">
