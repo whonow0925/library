@@ -22,20 +22,41 @@
         </p>
         <p v-else-if="noTitleKey === '交通指南'">
           <span class="traffic">
-            <img src="./images/traffic.jpg" alt="" />
+            <!-- <img src="./images/traffic.jpg" alt="" /> -->
+            <div id="allmap"></div>
           </span>
         </p>
         <p v-else-if="noTitleKey === '馆舍平面'">
           project content
         </p>
-        <p v-else-if="noTitleKey === '办证须知'">
-          project content
+        <p v-else-if="noTitleKey === '入馆须知'">
+          <span class="entranceRules">
+            1.学院实行校园卡一卡通，校园卡即为借书证，入馆凭本人校园卡在门禁处刷卡。校园卡仅限本人使用，不得转借他人。本院读者陪同他人入馆时，被陪同人员须向门卫出示身份证件，登记后方可入馆。<br />
+            2.自觉遵守图书馆各项规章制度，尊重工作人员。讲究文明礼貌，着装整齐，行为举止端庄，禁止有过分亲密举动。保持安静，禁止大声喧哗或在阅览区内接打电话。保持环境卫生，禁止随地吐痰和乱丢杂物，禁止在馆内吃零食、喝饮料。<br />
+            3.图书馆禁止占座行为，工作人员根据情况清理阅览桌面。图书馆对读者遗留在馆内的物品不负保管责任。<br />
+            4.图书馆为重点防火、防潮单位，严禁在馆内任何地点吸烟。对于在馆内吸烟的学生，将依据学院规定给予留校察看处分；学院教职工在馆内吸烟的，将上报学院人事部门，依有关规定严肃处理。禁止在潮湿阴雨天气及空调开启时开窗。严禁携带易燃易爆等危险物品和动物入馆。<br />
+            5.图书馆内禁止使用台灯等自带照明设备，禁止为电动车电池、电热宝、手机充电宝等各类充电设备充电。<br />
+            6.读者不得进入空调房、配电间、网络间、天台等非开放区域，不得私自碰触照明灯、应急灯、空调的墙壁开关及其它用电设备设施。<br />
+            7.爱护图书资料和馆内家具设备及其它公共设施，严禁在阅览桌椅及书刊上刻画或书写，禁止随意搬动家具，使用公共检索系统时禁止更改计算机系统的设置。<br />
+            8.离开图书馆时如所携带物品导致监测仪报警，应主动配合门卫和值班人员检查。<br />
+            违反上述规定者，需写出书面检讨，并视情节轻重给予批评教育、暂停借阅资格1-3个月或暂停入馆资格3-6个月等处理，或上报学院给予纪律处分。
+          </span>
         </p>
         <p v-else-if="noTitleKey === '服务项目'">
           project content
         </p>
-        <p v-else-if="noTitleKey === '外借规则'">
-          project content
+        <p v-else-if="noTitleKey === '借阅规则'">
+          <span class="borrowRules">
+            1.读者必须凭本人校园卡办理借阅手续，不得代借，可以代还。新生临时卡更换为正式卡前需同时出示本人身份证方可借书。凡凭校园卡借出的图书，概由持卡人负责归还和赔偿。<br />
+            2.借书时需输入借阅密码。初始密码为123456，密码可通过登录图书馆网站自行修改。<br />
+            3.借书时要当面点清册数，检查图书是否完整无损，如发现缺页、水渍、污损、撕拆、圈画等情形，应及时向工作人员声明，以明确责任，并由工作人员加盖污损章。否则由最后一名借书人承担责任，并按《图书馆遗失、损坏书刊赔偿办法》处理。<br />
+            4.读者需要的专业图书如已借出，可在网上办理预约手续，预约后保留5天。<br />
+            5.借书数量： （1）本院学生、教师及管理人员可借书30册。 （2）进修生可借书10册。<br />
+            6.借书期限：<br />
+            （1）图书借期60天。所借图书已到还期尚需继续使用时，如无人预约，可于到期之日前10天内在网上、或携书到借还台办理续借手续。逾期图书不能续借。每书只可续借一次，续借期为30天，从到期之日算起。逾期不还需缴纳逾期费用，每册0.20元/天。图书遗失办理赔偿手续时，逾期费用另计。读者需登录图书馆网站，进入“我的图书馆”，填写联系信息中的电子邮箱地址，以便在所借图书到期前收到提醒邮件。<br/>
+            （2）寒、暑假期间到期图书，只要在开学后的一周内归还，不视为逾期，否则逾期时间要包含寒、暑假。<br/>
+
+          </span>
         </p>
         <p v-else-if="noTitleKey === '吉珠新闻'">
           project content
@@ -50,8 +71,7 @@
     </div>
   </div>
 </template>
-
-<script>
+<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=zlHOHvlYo9bRr0PtYckEtpbyQ8ca0guy">
 import navigation from '@/components/Navigation/navigation'
 // import Navigation from '@/components/Navigation/navigation.vue'
 const renderContent = (value, row, index) => {
@@ -236,16 +256,16 @@ export default {
           tab: '馆舍平面'
         },
         {
-          key: '办证须知',
-          tab: '办证须知'
+          key: '入馆须知',
+          tab: '入馆须知'
         },
         {
           key: '服务项目',
           tab: '服务项目'
         },
         {
-          key: '外借规则',
-          tab: '外借规则'
+          key: '借阅规则',
+          tab: '借阅规则'
         },
         {
           key: '吉珠新闻',
@@ -264,7 +284,22 @@ export default {
       noTitleKey: 'app'
     }
   },
+  mounted() {
+    this.showMap()
+  },
   methods: {
+    showMap() {
+      var map = new window.BMap.Map('allmap') // 创建Map实例
+      map.centerAndZoom(new window.BMap.Point(116.404, 39.915), 11) // 初始化地图,设置中心点坐标和地图级别
+      //添加地图类型控件
+      map.addControl(
+        new window.BMap.MapTypeControl({
+          mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
+        })
+      )
+      map.setCurrentCity('珠海') // 设置地图显示的城市 此项是必须设置的
+      map.enableScrollWheelZoom(true)
+    },
     onTabChange(key, type) {
       console.log(key, type)
       this[type] = key
@@ -276,6 +311,7 @@ Navigation
 
 <style lang="less" scoped>
 /* @import url('https://fonts.font.im/css?family=Hanalei+Fill'); */
+
 .ant-card-head {
   display: flex;
   align-items: center;
@@ -294,9 +330,16 @@ Navigation
     /* font-family: 'Hanalei Fill', cursive; */
   }
   .traffic {
-    img{
-      width: 400px;
-      margin-left: 250px;
+    // img {
+    //   width: 400px;
+    //   margin-left: 250px;
+    // }
+    #allmap {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      font-family: '微软雅黑';
     }
   }
 }
