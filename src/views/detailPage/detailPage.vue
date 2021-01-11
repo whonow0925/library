@@ -1,6 +1,6 @@
 <template>
   <div class="detailPage">
-    1111
+       
   </div>
 </template>
 
