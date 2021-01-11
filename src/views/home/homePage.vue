@@ -254,7 +254,7 @@ img {
 }
 .swiper-pagination {
   position: absolute;
-  top: 100px;
+  top: 300px;
   right: 50px;
 }
 .swiper-container {
