@@ -22,8 +22,8 @@
         </p>
         <p v-else-if="noTitleKey === '交通指南'">
           <span class="traffic">
-            <!-- <img src="./images/traffic.jpg" alt="" /> -->
-            <div id="allmap"></div>
+            <img src="./images/traffic.jpg" alt="" />
+            <!-- <div id="allmap"></div> -->
           </span>
         </p>
         <p v-else-if="noTitleKey === '馆舍平面'">
@@ -67,11 +67,14 @@
         <p v-else-if="noTitleKey === '媒体报道'">
           project content
         </p>
+        <p v-else noTitleKey = '开放时间'>
+          project content
+        </p>
       </a-card>
     </div>
   </div>
 </template>
-<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=zlHOHvlYo9bRr0PtYckEtpbyQ8ca0guy">
+<script>
 import navigation from '@/components/Navigation/navigation'
 // import Navigation from '@/components/Navigation/navigation.vue'
 const renderContent = (value, row, index) => {
@@ -285,21 +288,21 @@ export default {
     }
   },
   mounted() {
-    this.showMap()
+    // this.showMap()
   },
   methods: {
-    showMap() {
-      var map = new window.BMap.Map('allmap') // 创建Map实例
-      map.centerAndZoom(new window.BMap.Point(116.404, 39.915), 11) // 初始化地图,设置中心点坐标和地图级别
-      //添加地图类型控件
-      map.addControl(
-        new window.BMap.MapTypeControl({
-          mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
-        })
-      )
-      map.setCurrentCity('珠海') // 设置地图显示的城市 此项是必须设置的
-      map.enableScrollWheelZoom(true)
-    },
+    // showMap() {
+    //   var map = new window.BMap.Map('allmap') // 创建Map实例
+    //   map.centerAndZoom(new window.BMap.Point(116.404, 39.915), 11) // 初始化地图,设置中心点坐标和地图级别
+    //   //添加地图类型控件
+    //   map.addControl(
+    //     new window.BMap.MapTypeControl({
+    //       mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
+    //     })
+    //   )
+    //   map.setCurrentCity('珠海') // 设置地图显示的城市 此项是必须设置的
+    //   map.enableScrollWheelZoom(true)
+    // },
     onTabChange(key, type) {
       console.log(key, type)
       this[type] = key
@@ -307,7 +310,6 @@ export default {
   }
 }
 </script>
-Navigation
 
 <style lang="less" scoped>
 /* @import url('https://fonts.font.im/css?family=Hanalei+Fill'); */
@@ -330,10 +332,10 @@ Navigation
     /* font-family: 'Hanalei Fill', cursive; */
   }
   .traffic {
-    // img {
-    //   width: 400px;
-    //   margin-left: 250px;
-    // }
+    img {
+      width: 400px;
+      margin-left: 250px;
+    }
     #allmap {
       width: 100%;
       height: 100%;

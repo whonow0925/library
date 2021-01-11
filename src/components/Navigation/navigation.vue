@@ -13,7 +13,7 @@
       </a-button>
     </div>
     <a-menu v-model="current" mode="horizontal">
-      <a-menu-item key="mail"> <a-icon type="bank" />首页 </a-menu-item>
+      <a-menu-item key="mail" @click="goHome"> <a-icon type="bank" />首页 </a-menu-item>
       <a-menu-item key="app">
         <div @click="onlineReading"><a-icon type="appstore" />在线阅读</div>
       </a-menu-item>
@@ -36,8 +36,8 @@
           </a-menu-item>
         </a-menu-item-group>
       </a-sub-menu>
-      <a-menu-item key="alipay">
-        <a href="https://antdv.com" target="_blank" rel="noopener noreferrer">关于吉珠数字图书馆</a>
+      <a-menu-item key="alipay" @click="goAbout">
+        <a  target="_blank" rel="noopener noreferrer">关于吉珠数字图书馆</a>
       </a-menu-item>
     </a-menu>
   </div>
@@ -61,6 +61,12 @@ export default {
     },
     register() {
       this.$router.push({ path: '/user/Register' })
+    },
+    goAbout() {
+      this.$router.push({ path: '/detailPage' })
+    },
+    goHome() {
+      this.$router.push({ path: '/homePage' })
     }
   }
 }

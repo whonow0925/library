@@ -98,6 +98,7 @@
                       style="width:33.3%;text-align:center;height:166px"
                       v-for="(item, index) in optionList"
                       :key="index"
+                      @click="goAbout(index)"
                     >
                       <div style="margin:10px 20px"><img :src="require(`./images/${item.src}.png`)" /></div>
                       <p>{{ item.name }}</p>
@@ -223,7 +224,11 @@ export default {
       }
     }
   },
-  methods: {}
+  methods: {
+    goAbout(index) {
+      this.$router.push({ path: '/detailPage' },{id:index})
+    }
+  }
 }
 </script>
 
