@@ -98,7 +98,7 @@
                       style="width:33.3%;text-align:center;height:166px"
                       v-for="(item, index) in optionList"
                       :key="index"
-                      @click="goAbout(index)"
+                      @click="goAbout(item.name)"
                     >
                       <div style="margin:10px 20px"><img :src="require(`./images/${item.src}.png`)" /></div>
                       <p>{{ item.name }}</p>
@@ -124,6 +124,8 @@ export default {
   },
   data() {
     return {
+      //被选中服务的index下标数
+      // optionNumber: 1,
       // 服务列表
       optionList: [
         {
@@ -139,7 +141,7 @@ export default {
           src: '平面图设计'
         },
         {
-          name: '办证须知',
+          name: '入馆须知',
           src: '须知'
         },
         {
@@ -147,7 +149,7 @@ export default {
           src: '服务'
         },
         {
-          name: '外借规则',
+          name: '借阅规则',
           src: '规则'
         },
         {
@@ -159,7 +161,7 @@ export default {
           src: '规划'
         },
         {
-          name: '媒体报道',
+          name: '联系我们',
           src: '媒体报道'
         }
       ],
@@ -225,8 +227,14 @@ export default {
     }
   },
   methods: {
-    goAbout(index) {
-      this.$router.push({ path: '/detailPage' },{id:index})
+    goAbout(optionName) {
+      this.$router.push({
+        path: '/detailPage',
+        query: {
+          name: optionName
+        }
+      })
+      // console.log(optionName,'111')
     }
   }
 }

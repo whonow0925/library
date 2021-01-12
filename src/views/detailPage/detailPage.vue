@@ -22,7 +22,7 @@
         </p>
         <p v-else-if="noTitleKey === '交通指南'">
           <span class="traffic">
-            <img src="./images/traffic.jpg" alt="" />
+            <!-- <img src="./images/traffic.jpg" alt="" /> -->
             <!-- <div id="allmap"></div> -->
           </span>
         </p>
@@ -53,24 +53,57 @@
             4.读者需要的专业图书如已借出，可在网上办理预约手续，预约后保留5天。<br />
             5.借书数量： （1）本院学生、教师及管理人员可借书30册。 （2）进修生可借书10册。<br />
             6.借书期限：<br />
-            （1）图书借期60天。所借图书已到还期尚需继续使用时，如无人预约，可于到期之日前10天内在网上、或携书到借还台办理续借手续。逾期图书不能续借。每书只可续借一次，续借期为30天，从到期之日算起。逾期不还需缴纳逾期费用，每册0.20元/天。图书遗失办理赔偿手续时，逾期费用另计。读者需登录图书馆网站，进入“我的图书馆”，填写联系信息中的电子邮箱地址，以便在所借图书到期前收到提醒邮件。<br/>
-            （2）寒、暑假期间到期图书，只要在开学后的一周内归还，不视为逾期，否则逾期时间要包含寒、暑假。<br/>
-
+            （1）图书借期60天。所借图书已到还期尚需继续使用时，如无人预约，可于到期之日前10天内在网上、或携书到借还台办理续借手续。逾期图书不能续借。每书只可续借一次，续借期为30天，从到期之日算起。逾期不还需缴纳逾期费用，每册0.20元/天。图书遗失办理赔偿手续时，逾期费用另计。读者需登录图书馆网站，进入“我的图书馆”，填写联系信息中的电子邮箱地址，以便在所借图书到期前收到提醒邮件。<br />
+            （2）寒、暑假期间到期图书，只要在开学后的一周内归还，不视为逾期，否则逾期时间要包含寒、暑假。<br />
           </span>
         </p>
         <p v-else-if="noTitleKey === '吉珠新闻'">
-          project content
+          <span class="news">
+            <span class="title">吉珠简报</span>
+            <a-row>
+              <a-col :span="16">
+                <span class="newsImage"><img src="./images/newsImage.jpg"/></span>
+              </a-col>
+              <a-col :span="8">
+                <span class="content">
+                  <table>
+                    <tr>
+                      <th class="new_title">本馆新闻</th>
+                    </tr>
+                    <tr v-for="(item, index) in newsList" :key="item.id">
+                      <td style="width:75px">{{ item.time }}</td>
+                      <td :class="item.type == '新闻' ? 'advertising' : 'notice'">{{ item.type }}</td>
+                      <a class="content" @click="showModal(index)">
+                        {{ item.content.length > 18 ? item.content.slice(0, 18) + '...' : item.content }}
+                      </a>
+                    </tr>
+                  </table>
+                </span>
+              </a-col>
+            </a-row>
+          </span>
         </p>
         <p v-else-if="noTitleKey === '发展规划'">
           project content
         </p>
-        <p v-else-if="noTitleKey === '媒体报道'">
-          project content
-        </p>
-        <p v-else noTitleKey = '开放时间'>
-          project content
+        <p v-else-if="noTitleKey === '联系我们'">
+          <span class="connect">
+            <a-table :columns="columns_connect" :data-source="connectData">
+              <a slot="name" slot-scope="text">{{ text }}</a>
+            </a-table>
+          </span>
         </p>
       </a-card>
+    </div>
+    <div class="newsModal">
+      <a-modal v-model="visible" :title="this.newsList[newsId].content" :footer="null">
+        <p>{{ this.newsList[newsId].newsDetail }}</p>
+        <div class="modalButton">
+          <a-button type="primary" @click="closeModal">关闭详情</a-button>
+        </div>
+      </a-modal>
+      <br />
+      <br />
     </div>
   </div>
 </template>
@@ -192,7 +225,66 @@ const data = [
     time: '星期一至星期日 07:00 - 22:30'
   }
 ]
+// 联系我们的数据
+const columns_connect = [
+  {
+    title: '机构名称',
+    dataIndex: 'institutionName',
+    key: 'institutionName',
+    scopedSlots: { customRender: 'name' }
+  },
+  {
+    title: '联系人',
+    dataIndex: 'name',
+    key: 'name'
+    // width: 80,
+  },
+  {
+    title: '联系电话',
+    dataIndex: 'phone',
+    key: 'phone'
+    // ellipsis: true,
+  }
+]
 
+const connectData = [
+  {
+    key: '1',
+    institutionName: '办公室',
+    name: '张小慧',
+    phone: '0756-7626255/13726244008'
+  },
+  {
+    key: '2',
+    institutionName: '办采访与编目部室',
+    name: ' 罗 伟',
+    phone: '15820599879(短号：639879)'
+  },
+  {
+    key: '3',
+    institutionName: '流通与阅览部',
+    name: '丁可宁',
+    phone: '13726289335(短号：6999)'
+  },
+  {
+    key: '4',
+    institutionName: '信息与技术部',
+    name: '王 超',
+    phone: '13726205228(短号：615228)'
+  },
+  {
+    key: '5',
+    institutionName: '参考咨询部',
+    name: '米梓源',
+    phone: '18218937966(短号：617966）'
+  },
+  {
+    key: '6',
+    institutionName: '期刊部',
+    name: '丁可宁',
+    phone: '13726289335(短号：6999)'
+  }
+]
 export default {
   components: {
     navigation
@@ -243,8 +335,43 @@ export default {
       }
     ]
     return {
+      newsId: 1,
+      visible: false,
+      //吉珠新闻列表
+      newsList: [
+        {
+          id: 1,
+          time: '2019-1-23',
+          type: '新闻',
+          content: '我校图书馆受邀参加《珠海商贸史料辑录》首发式',
+          newsDetail: '111'
+        },
+        {
+          id: 2,
+          time: '2019-1-23',
+          type: '公告',
+          content: '我校图书馆受邀参加《珠海商贸史料辑录》首发式',
+          newsDetail: '2222'
+        },
+        {
+          id: 3,
+          time: '2019-1-23',
+          type: '新闻',
+          content: '我校图书馆受邀参加《珠海商贸史料辑录》首发式',
+          newsDetail: '3333'
+        },
+        {
+          id: 4,
+          time: '2019-1-23',
+          type: '新闻',
+          content: '我校图书馆受邀参加《珠海商贸史料辑录》首发式',
+          newsDetail: '1144441'
+        }
+      ],
+      columns_connect,
+      connectData, //联系我们的table数据
       data,
-      columns,
+      columns, //开放时间的table数据
       tabListNoTitle: [
         {
           key: '开放时间',
@@ -279,12 +406,12 @@ export default {
           tab: '发展规划'
         },
         {
-          key: '媒体报道',
-          tab: '媒体报道'
+          key: '联系我们',
+          tab: '联系我们'
         }
       ],
       key: 'tab1',
-      noTitleKey: 'app'
+      noTitleKey: this.$route.query.name
     }
   },
   mounted() {
@@ -306,6 +433,14 @@ export default {
     onTabChange(key, type) {
       console.log(key, type)
       this[type] = key
+    },
+    showModal(index) {
+      this.visible = true
+      this.newsId = index
+      console.log(index)
+    },
+    closeModal() {
+      this.visible = false
     }
   }
 }
@@ -317,6 +452,10 @@ export default {
 .ant-card-head {
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+.modalButton {
+  display: flex;
   justify-content: center;
 }
 .detailPage {
@@ -342,6 +481,48 @@ export default {
       overflow: hidden;
       margin: 0;
       font-family: '微软雅黑';
+    }
+  }
+  .news {
+    .title {
+      display: inline-block;
+      width: 500px;
+      height: 50px;
+      background-color: rgb(163, 25, 20);
+      font-size: 28px;
+      color: white;
+      text-align: center;
+    }
+    .newsImage {
+      img {
+        display: inline-block;
+        width: 700px;
+        margin: 50px 20px;
+      }
+    }
+    .content {
+      table {
+        margin-top: 20px;
+        .new_title {
+          color: wheat;
+          font-size: 18px;
+        }
+        .advertising {
+          width: 40px;
+          background-color: rgb(163, 25, 20);
+          color: white;
+          border-radius: 10px;
+          text-align: center;
+          // font-weight: 100;
+        }
+        .notice {
+          width: 40px;
+          background-color: #f0ad4e;
+          color: white;
+          border-radius: 10px;
+          text-align: center;
+        }
+      }
     }
   }
 }

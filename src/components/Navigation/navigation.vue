@@ -37,7 +37,7 @@
         </a-menu-item-group>
       </a-sub-menu>
       <a-menu-item key="alipay" @click="goAbout">
-        <a  target="_blank" rel="noopener noreferrer">关于吉珠数字图书馆</a>
+        <a target="_blank" rel="noopener noreferrer">关于吉珠数字图书馆</a>
       </a-menu-item>
     </a-menu>
   </div>
@@ -63,7 +63,12 @@ export default {
       this.$router.push({ path: '/user/Register' })
     },
     goAbout() {
-      this.$router.push({ path: '/detailPage' })
+      this.$router.push({
+        path: '/detailPage',
+        query: {
+          name: '开放时间'
+        }
+      })
     },
     goHome() {
       this.$router.push({ path: '/homePage' })
