@@ -23,7 +23,7 @@
         <p v-else-if="noTitleKey === '交通指南'">
           <span class="traffic">
             <!-- <img src="./images/traffic.jpg" alt="" /> -->
-            <!-- <div id="allmap"></div> -->
+            <div id="allmap" class="allmap"></div>
           </span>
         </p>
         <p v-else-if="noTitleKey === '馆舍平面'">
@@ -107,9 +107,12 @@
     </div>
   </div>
 </template>
+
 <script>
 import navigation from '@/components/Navigation/navigation'
+
 // import Navigation from '@/components/Navigation/navigation.vue'
+// type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=zlHOHvlYo9bRr0PtYckEtpbyQ8ca0guy"
 const renderContent = (value, row, index) => {
   const obj = {
     children: value,
@@ -411,28 +414,29 @@ export default {
         }
       ],
       key: 'tab1',
-      noTitleKey: this.$route.query.name
+      noTitleKey: ''
     }
   },
   mounted() {
-    // this.showMap()
+    this.noTitleKey= this.$route.query.name
   },
   methods: {
-    // showMap() {
-    //   var map = new window.BMap.Map('allmap') // 创建Map实例
-    //   map.centerAndZoom(new window.BMap.Point(116.404, 39.915), 11) // 初始化地图,设置中心点坐标和地图级别
-    //   //添加地图类型控件
-    //   map.addControl(
-    //     new window.BMap.MapTypeControl({
-    //       mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
-    //     })
-    //   )
-    //   map.setCurrentCity('珠海') // 设置地图显示的城市 此项是必须设置的
-    //   map.enableScrollWheelZoom(true)
-    // },
+    showMap() {
+      var map = new window.BMap.Map('allmap') // 创建Map实例
+      map.centerAndZoom(new window.BMap.Point(113.413181,22.058085), 18) // 初始化地图,设置中心点坐标和地图级别
+      //添加地图类型控件
+      map.addControl(
+        new window.BMap.MapTypeControl({
+          mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
+        })
+      )
+      map.setCurrentCity('珠海') // 设置地图显示的城市 此项是必须设置的
+      map.enableScrollWheelZoom(true)
+    },
     onTabChange(key, type) {
       console.log(key, type)
-      this[type] = key
+      this.noTitleKey = key
+
     },
     showModal(index) {
       this.visible = true
@@ -442,7 +446,16 @@ export default {
     closeModal() {
       this.visible = false
     }
-  }
+  },
+  watch: {
+    noTitleKey(val) {
+      if(val === '交通指南') {
+        this.$nextTick(() => {
+          this.showMap()
+        })
+      }
+    }
+  },
 }
 </script>
 
@@ -475,9 +488,9 @@ export default {
       width: 400px;
       margin-left: 250px;
     }
-    #allmap {
+    .allmap {
       width: 100%;
-      height: 100%;
+      height:500px;
       overflow: hidden;
       margin: 0;
       font-family: '微软雅黑';
