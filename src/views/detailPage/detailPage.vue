@@ -42,7 +42,7 @@
             违反上述规定者，需写出书面检讨，并视情节轻重给予批评教育、暂停借阅资格1-3个月或暂停入馆资格3-6个月等处理，或上报学院给予纪律处分。
           </span>
         </p>
-        <p v-else-if="noTitleKey === '服务项目'">
+        <p v-else-if="noTitleKey === '项目服务'">
           project content
         </p>
         <p v-else-if="noTitleKey === '借阅规则'">
@@ -393,7 +393,7 @@ export default {
           tab: '入馆须知'
         },
         {
-          key: '服务项目',
+          key: '项目服务',
           tab: '服务项目'
         },
         {
