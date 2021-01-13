@@ -2,7 +2,7 @@
   <div class="onlineReading">
     <navigation></navigation>
     <div class="bookCard">
-      <a-card hoverable style="width: 300px;margin:40px" v-for="item in bookList" :key="item.id">
+      <a-card hoverable style="width: 300px;margin:40px 5px" v-for="item in bookList" :key="item.id">
         <img slot="cover" alt="example" :src="require(`./images/${item.imageName}.jpg`)" />
         <template slot="actions" class="ant-card-actions">
           <div @click="readingDetail(item)">在线阅读</div>
@@ -126,11 +126,12 @@ export default {
 .onlineReading {
   // position: absolute;
   height: 100vh;
-  // background-image: url('./images/首页2.png');
+  background-image: url('./images/background.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   margin-top: 20px;
   .bookCard {
+    opacity: 0.9;
     height: 100vh;
     overflow-y: auto;
     position: relative;
