@@ -366,6 +366,16 @@ export const constantRouterMap = [
     component: () => import(/* webpackChunkName: "homePage" */ '@/views/bookDetail/bookDetail')
   },
   {
+    path: '/login',
+    name: 'login',
+    component: () => import(/* webpackChunkName: "homePage" */ '@/views/login/login')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import(/* webpackChunkName: "homePage" */ '@/views/register/register')
+  },
+  {
     path: '/user',
     component: UserLayout,
     redirect: '/user/login',
