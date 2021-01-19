@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="loginButton">
-        <a-button class="aButton" type="primary">
+        <a-button class="aButton" type="primary" @click="login">
           登录
         </a-button>
       </div>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+const axios = require('axios')
 export default {
   data() {
     return {
@@ -52,6 +53,20 @@ export default {
     //   } else {
     //   }
     // },
+    login(){
+      const name = this.userName
+      const password = this.userPassword
+      axios.post('/api/auth/login',{
+        name:name,
+        password:password
+      })
+      .then(response =>{
+        console.log(response)
+      })
+      .catch(error=>{
+        console.log(error)
+      })
+    }
   }
 }
 </script>
