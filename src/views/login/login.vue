@@ -3,8 +3,23 @@
     <div class="loginDialog">
       <div class="title">吉林大学珠海学院数字图书馆</div>
       <div class="input">
-        <div class="userName"><span style="color:red">*</span>用户名：<a-input placeholder="Basic usage" /></div>
-        <div class="userPassword"><span style="color:red">*</span>密码：<a-input placeholder="Basic usage" /></div>
+        <div class="userName">
+          <span style="color:red;marging-right:-5px">*</span>
+          <span class="name">用户名：</span>
+          <a-input 
+            v-model="userName"
+            class="nameInput" 
+            placeholder="请输入用户名/学号"
+            allow-clear />
+        </div>
+        <div class="userPassword">
+          <span style="color:red">*</span>
+          <span class="pwd">密码：</span>
+          <a-input-password 
+            v-model="userPassword"
+            class="passwordInput" 
+            placeholder="请输入密码(英文和数字)" />
+        </div>
       </div>
       <div class="loginButton">
         <a-button class="aButton" type="primary">
@@ -20,11 +35,24 @@
 
 <script>
 export default {
-    methods: {
-        toRegister() {
-            this.$router.push({path:'/register'})
-        }
+  data() {
+    return {
+      userName: '',
+      userPassword: ''
+    }
+  },
+  methods: {
+    toRegister() {
+      this.$router.push({ path: '/register' })
     },
+    // pwdValidate(val){
+    //   const ipRegex = /[^\w]/g
+    //   if (ipRegex.test(val) === false) {
+    //     this.$message.error('输入格式有误，请重新输入！！！')
+    //   } else {
+    //   }
+    // },
+  }
 }
 </script>
 
@@ -39,41 +67,62 @@ export default {
   justify-content: center;
   align-items: center;
   .loginDialog {
-    width: 450px;
+    width: 410px;
     height: 270px;
     background-color: white;
     border-radius: 20px;
     // opacity: 0.6;
     text-align: center;
     .title {
+      color: skyblue;
       font-size: 20px;
-      font-weight: 400;
+      font-weight: 800;
       margin: 20px auto;
     }
+    // .input {
+    //   .userName {
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     text-align: center;
+    //   }
+    //   .userPassword {
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     margin-right: -14px;
+    //     margin-top: 20px;
+    //   }
+    // }
     .input {
-      input {
-        width: 300px;
-      }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-flow: column;
       .userName {
         display: flex;
         justify-content: center;
         align-items: center;
-        text-align: center;
+        .name{
+          width: 100px;
+        }
       }
       .userPassword {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-right: -14px;
         margin-top: 20px;
+        .pwd{
+          width: 100px;
+        }
       }
     }
     .loginButton {
-        margin: 20px auto;
+      margin: 20px auto;
       .aButton {
         width: 200px;
         border-radius: 12px;
-      } 
+      }
     }
   }
 }
