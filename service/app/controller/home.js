@@ -9,11 +9,18 @@ class HomeController extends Controller {
     const { ctx } = this;
     ctx.body = 'hi, egg';
   }
-  //登录接口
-  async login() {
+  //注册接口
+  async register() {
     const { ctx } = this;
 
     const result = await ctx.service.user.addUser();
+    //接口返回的数据
+    ctx.body =  result
+    ctx.status = 200
+  }
+  async login() {
+    const { ctx } = this;
+    const result = await ctx.service.user.find();
     //接口返回的数据
     ctx.body =  result
     ctx.status = 200

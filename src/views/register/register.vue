@@ -6,30 +6,65 @@
         <div class="userName">
           <span style="color:red;marging-right:-5px">*</span>
           <span class="name">用户名：</span>
-          <a-input class="nameInput" placeholder="请输入用户名/学号" allow-clear />
+          <a-input v-model="userName" class="nameInput" placeholder="请输入用户名/学号" allow-clear />
         </div>
         <div class="userPassword">
           <span style="color:red">*</span>
           <span class="pwd">密码：</span>
-          <a-input-password class="passwordInput" placeholder="请输入密码" />
+          <a-input-password v-model="password" class="passwordInput" placeholder="请输入密码" />
         </div>
         <div class="confirmPassword">
           <span style="color:red">*</span>
           <span class="pwdConfirm">再次确认密码：</span>
-          <a-input-password class="passwordConfirm" placeholder="请再次确认密码" style="width:80%"/>
+          <a-input-password
+            v-model="confirmPwd"
+            class="passwordConfirm"
+            placeholder="请再次确认密码"
+            style="width:80%"
+          />
         </div>
       </div>
       <div class="registerButton">
-        <a-button class="aButton" type="primary">
+        <a-button class="aButton" type="primary" @click="register">
           注册
         </a-button>
       </div>
     </div>
   </div>
 </template>
-
 <script>
-export default {}
+const axios = require('axios')
+export default {
+  data() {
+    return {
+      userName: '',
+      password: '',
+      confirmPwd: ''
+    }
+  },
+  methods: {
+    register() {
+      const name = this.userName
+      const password = this.password
+      const confirmPwd = this.confirmPwd
+      if (password == confirmPwd) {
+        axios
+          .post('/api/auth/register', {
+            name: name,
+            password: password
+          })
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      } else {
+        this.$message.warning('两次密码输入不一致，请重新输入')
+      }
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -101,7 +136,7 @@ export default {}
         .pwd {
           width: 100px;
         }
-      } 
+      }
       .confirmPassword {
         display: flex;
         justify-content: center;

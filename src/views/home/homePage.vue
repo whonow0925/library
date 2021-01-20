@@ -42,10 +42,20 @@
             <!-- 新书推荐 -->
             <div class="secondPageContent">
               <div class="recommend">
-                <swiper :options="bookSwiperOption" class="swiper-container">
+                <!-- <swiper :options="bookSwiperOption" class="swiper-container">
                   <swiper-slide class="swiper-slide" v-for="(item, index) in bookList" :key="index">
                     <img style="width:180px;height:180px" :src="require(`./images/${index}.jpg`)" alt="" />
                   </swiper-slide>
+                </swiper> -->
+                <swiper :options="bookSwiperOption" class="swiper-container">
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt=""></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt=""></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt=""></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt=""></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt=""></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt=""></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt=""></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt=""></swiper-slide>
                 </swiper>
               </div>
               <!-- 书籍排行榜 -->
@@ -211,7 +221,7 @@ export default {
         autoplay: true,
         effect: 'coverflow',
         grabCursor: true,
-        // centeredSlides: true,
+        centeredSlides: true,
         slidesPerView: 'auto',
         coverflowEffect: {
           rotate: 50,
@@ -220,9 +230,13 @@ export default {
           modifier: 1,
           slideShadows: true
         },
-        pagination: {
-          el: '.swiper-pagination'
-        }
+        // pagination: {
+        //   el: '.swiper-pagination'
+        // }
+        navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
       }
     }
   },
@@ -347,14 +361,16 @@ img {
       top: 50%;
       transform: translateY(-50%);
       .recommend {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 1200px;
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-        font-size: 14px;
-        color: #000;
-        padding: 0;
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
+        // width: 1200px;
+        // font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        // font-size: 14px;
+        // color: #000;
+        // padding: 0;
+        margin: 0 auto;
+        width: 80%;
         .swiper-container {
           overflow: hidden;
           width: 100%;
@@ -365,6 +381,11 @@ img {
         .swiper-slide {
           width: 300px;
           height: 200px;
+          img{
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+          }
         }
       }
       .bookRank {

@@ -57,10 +57,10 @@ export default {
       this.$router.push({ path: '/onlineReading' })
     },
     login() {
-      this.$router.push({ path: '/user/Login' })
+      this.$router.push({ path: '/login' })
     },
     register() {
-      this.$router.push({ path: '/user/Register' })
+      this.$router.push({ path: '/register' })
     },
     goAbout() {
       this.$router.push({
