@@ -1,7 +1,7 @@
 <template>
   <div class="homePage">
     <div class="navigationBar">
-      <navigation></navigation>
+      <navigation :isLogin="isLogin"></navigation>
     </div>
     <div class="swiper-container">
       <swiper class="swiper-wrapper" :options="swiperOption">
@@ -37,7 +37,12 @@
                   <a-icon type="heart" theme="twoTone" two-tone-color="#eb2f96" />
                   <a-icon type="check-circle" theme="twoTone" two-tone-color="#52c41a" />
                 </div>
-                <a-input-search placeholder="输入想要查找的书籍" enter-button="search" @search="onSearch" style="width:500px;margin:0 10px" />
+                <a-input-search
+                  placeholder="输入想要查找的书籍"
+                  enter-button="search"
+                  @search="onSearch"
+                  style="width:500px;margin:0 10px"
+                />
               </div>
             </div>
           </div>
@@ -53,39 +58,52 @@
                   </swiper-slide>
                 </swiper> -->
                 <swiper :options="bookSwiperOption" class="swiper-container">
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt=""></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt=""></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt=""></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt=""></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt=""></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt=""></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt=""></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt=""></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt=""/></swiper-slide>
                 </swiper>
               </div>
               <!-- 书籍排行榜 -->
               <a-row :gutter="24" type="flex" justify="center">
-                <a-col :span="8">
+                <a-col :span="18">
                   <div class="bookRank">
-                    <p class="title">书籍热搜榜</p>
-                    <a-list item-layout="horizontal" :data-source="rangList">
+                    <div class="title">
+                      <a-icon type="like" />
+                      <a class="title">书籍热搜榜</a>
+                    </div>
+                    <!-- <a-list item-layout="horizontal" :data-source="rankList">
                       <a-list-item slot="renderItem" slot-scope="item">
                         <a-list-item-meta :description="item.description">
                           <a slot="title" href="https://www.antdv.com/">{{ item.title }}</a>
                           <img style="width:50px;height:50px" slot="avatar" src="./images/book1.jpg" />
                         </a-list-item-meta>
                       </a-list-item>
-                    </a-list>
+                    </a-list> -->
+                    <div class="book">
+                      <ul v-for="(item, index) in rankList" :key="index">
+                        <li>
+                          <span>{{ index + 1 }}</span>
+                          <span class="bookName">{{ item.bookName }}</span>
+                          <span>{{ item.writer }}</span>
+                          <span>简介：{{ item.describe.length > 38 ? item.describe.slice(0, 38) + '...' : item.describe }}</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </a-col>
-                <a-col :span="8">
+                <!-- <a-col :span="8">
                   <div class="lover">
                     <a-card title="猜你喜欢">
                       <a slot="extra" href="#">更多</a>
                       <div class="loverDetail"></div>
                     </a-card>
                   </div>
-                </a-col>
+                </a-col> -->
               </a-row>
             </div>
           </div>
@@ -137,8 +155,26 @@ export default {
   components: {
     navigation
   },
+  mounted() {
+    // console.log(this.$store.getters)
+    if (this.$store.getters.token) {
+      this.isLogin = true
+    }
+    this.$axios
+      .get('/api/book/bookRank')
+      .then(response => {
+        // console.log(response.data.result,22)
+        for (var i = 0; i < response.data.result.length; i++) {
+          this.rankList.push(response.data.result[i])
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  },
   data() {
     return {
+      isLogin: false,
       //被选中服务的index下标数
       // optionNumber: 1,
       // 服务列表
@@ -181,28 +217,7 @@ export default {
         }
       ],
       //书籍排行榜单
-      rangList: [
-        {
-          title: '四代同堂',
-          description: 'dsfvaedgerhrtehtr',
-          writer: 'asdfcas'
-        },
-        {
-          title: '西游记',
-          description: 'dsfvaedgerhrtehtr54654',
-          writer: 'asdfcas'
-        },
-        {
-          title: '水浒传',
-          description: 'dsfvaedgerhrtehtrdsfvd',
-          writer: 'asdfcas'
-        },
-        {
-          title: '三国演义',
-          description: 'dsfvaedgerhrtehttgrhnytr',
-          writer: 'asdfcas'
-        }
-      ],
+      rankList: [],
       bookList: [
         './images/0.jpg',
         './images/1.jpg',
@@ -239,9 +254,9 @@ export default {
         //   el: '.swiper-pagination'
         // }
         navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
       }
     }
   },
@@ -256,19 +271,20 @@ export default {
       // console.log(optionName,'111')
     },
     // 书籍查找
-    onSearch(value){
+    onSearch(value) {
       console.log(value)
       const bookName = value
-      this.$axios.post('/api/book/searchBook',{
-        bookName:bookName
-      })
-      .then((response)=>{
-        console.log(response)
-        this.$message.warning(response.data.msg)
-      })
-      .catch(error=>{
-        console.log(error)
-      })
+      this.$axios
+        .post('/api/book/searchBook', {
+          bookName: bookName
+        })
+        .then(response => {
+          console.log(response)
+          this.$message.warning(response.data.msg)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }
@@ -405,7 +421,7 @@ img {
         .swiper-slide {
           width: 300px;
           height: 200px;
-          img{
+          img {
             width: 100%;
             height: 100%;
             overflow: hidden;
@@ -420,12 +436,24 @@ img {
         // height: 380px;
         text-align: left;
         height: 250px;
-        overflow: auto;
+        overflow: hidden;
         .title {
           margin-left: 20px;
           font-size: 28px;
           padding-top: 20px;
           margin-bottom: 5px;
+          color: skyblue;
+          font-weight: 800;
+        }
+        .book{
+          font-size: 15px;
+          span{
+            margin: 5px 10px;
+          }
+          .bookName{
+            background: pink;
+            border-radius: 10px;
+          }
         }
       }
       .lover {

@@ -1,7 +1,7 @@
 <template>
   <div class="navigation">
     <!-- 导航栏左侧功能按钮 -->
-    <div class="btn">
+    <div class="btn" :style="`visibility:${isLogin?'hidden':'visible'}`">
       <a-button type="primary" @click="login">
         登录
       </a-button>
@@ -46,6 +46,12 @@
 <script>
 export default {
   name: 'Navigation',
+  props: {
+    isLogin: {
+      type: Boolean,
+      default: false
+    },
+  },
   data() {
     return {
       current: ['bank']

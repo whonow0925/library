@@ -11,6 +11,7 @@ module.exports = app => {
   router.post('/api/auth/register', controller.home.register);
   router.post('/api/auth/login', controller.home.login);
   router.post('/api/book/searchBook',controller.home.searchBook);
+  router.get('/api/book/bookRank',controller.home.bookRank);
   // router.post('/api/auth/logout', controller.home.logout);
   // router.post('/api/auth/2step-code', controller.home.twofactor);
   // router.get('/api/user/info', controller.home.getInfo);

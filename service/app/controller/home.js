@@ -50,9 +50,7 @@ class HomeController extends Controller {
   //homePage -> pageOne 查找书籍
   async searchBook() {
     const { ctx } = this
-    console.log(ctx.request.body, 1111)
     const result = await ctx.service.user.searchBook(ctx.request.body)
-    console.log(result, 11111)
     if (result.result) {
       ctx.body = {
         msg: '找到这本书了，等下帮你转页面'
@@ -60,6 +58,15 @@ class HomeController extends Controller {
     } else {
       ctx.body = { msg: '查无此书' }
     }
+    ctx.status = 200
+  }
+
+  //热搜书籍排行榜
+  async bookRank() {
+    const { ctx } = this
+    const result = await ctx.service.user.bookRank()
+    console.log(result,111);
+    ctx.body = result
     ctx.status = 200
   }
   //注销接口
