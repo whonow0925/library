@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-const axios = require('axios')
+// const axios = require('axios')
 export default {
   data() {
     return {
@@ -44,17 +44,19 @@ export default {
   },
   methods: {
     register() {
-      const name = this.userName
+      const username = this.userName
       const password = this.password
       const confirmPwd = this.confirmPwd
       if (password == confirmPwd) {
-        axios
+        this.$axios
           .post('/api/auth/register', {
-            name: name,
+            name: username,
             password: password
           })
           .then(response => {
             console.log(response)
+            if(response.data=='账号已被注册，请前往登录'){
+            }
           })
           .catch(error => {
             console.log(error)

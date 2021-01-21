@@ -48,7 +48,7 @@ const user = {
         })
       })
     },
-
+    
     // 获取用户信息
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {

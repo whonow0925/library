@@ -12,10 +12,17 @@ class HomeController extends Controller {
   //注册接口
   async register() {
     const { ctx } = this
+    const result = await ctx.service.user.find(ctx.request.body)
+    console.log(result, 'aaa')
+    if (result.user) {
+      ctx.body = { msg: '账号已被注册，请前往登录' }
+    } else {
+      console.log(ctx.request, 111)
+      const result = await ctx.service.user.addUser(ctx.request)
+      //接口返回的数据
+      ctx.body = { msg: '账号注册成功' }
+    }
 
-    const result = await ctx.service.user.addUser()
-    //接口返回的数据
-    ctx.body = result
     ctx.status = 200
   }
   //登录接口
@@ -34,8 +41,24 @@ class HomeController extends Controller {
       }
     } else {
       ctx.body = {
-        error: '用户不存在'
+        error: { msg: '用户不存在,请注册' }
       }
+    }
+    ctx.status = 200
+  }
+
+  //homePage -> pageOne 查找书籍
+  async searchBook() {
+    const { ctx } = this
+    console.log(ctx.request.body, 1111)
+    const result = await ctx.service.user.searchBook(ctx.request.body)
+    console.log(result, 11111)
+    if (result.result) {
+      ctx.body = {
+        msg: '找到这本书了，等下帮你转页面'
+      }
+    } else {
+      ctx.body = { msg: '查无此书' }
     }
     ctx.status = 200
   }

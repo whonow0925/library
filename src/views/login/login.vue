@@ -58,7 +58,8 @@ export default {
       const name = this.userName
       const password = this.userPassword
       this.Login({name,password}).then(()=>{
-        this.$router.push({path:'/login'})
+        // this.$router.push({path:'/homePage'})
+        console.log(this.$store.getters.roles)
       })
       // this.axios.post('/api/auth/login',{
       //   name:name,

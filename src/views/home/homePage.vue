@@ -21,7 +21,7 @@
                 </div>
               </div>
               <div class="search">
-                <a-dropdown>
+                <!-- <a-dropdown>
                   <a-button style="border-radius:12px">书籍类型</a-button>
                   <a-menu slot="overlay">
                     <a-menu-item>
@@ -31,8 +31,13 @@
                       <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">借阅书籍</a>
                     </a-menu-item>
                   </a-menu>
-                </a-dropdown>
-                <a-input-search placeholder="input search text" enter-button style="width:500px;margin:0 10px" />
+                </a-dropdown> -->
+                <div class="icons-list">
+                  <a-icon type="smile" theme="twoTone" />
+                  <a-icon type="heart" theme="twoTone" two-tone-color="#eb2f96" />
+                  <a-icon type="check-circle" theme="twoTone" two-tone-color="#52c41a" />
+                </div>
+                <a-input-search placeholder="输入想要查找的书籍" enter-button="search" @search="onSearch" style="width:500px;margin:0 10px" />
               </div>
             </div>
           </div>
@@ -249,12 +254,31 @@ export default {
         }
       })
       // console.log(optionName,'111')
+    },
+    // 书籍查找
+    onSearch(value){
+      console.log(value)
+      const bookName = value
+      this.$axios.post('/api/book/searchBook',{
+        bookName:bookName
+      })
+      .then((response)=>{
+        console.log(response)
+        this.$message.warning(response.data.msg)
+      })
+      .catch(error=>{
+        console.log(error)
+      })
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+.icons-list /deep/ .anticon {
+  margin-right: 6px;
+  font-size: 24px;
+}
 .ant-btn-primary {
   background-color: skyblue;
   border-radius: 10px;
