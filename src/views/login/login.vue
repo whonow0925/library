@@ -34,7 +34,7 @@
 </template>
 
 <script>
-const axios = require('axios')
+import {mapActions} from 'vuex'
 export default {
   data() {
     return {
@@ -43,6 +43,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['Login']),
     toRegister() {
       this.$router.push({ path: '/register' })
     },
@@ -56,16 +57,19 @@ export default {
     login(){
       const name = this.userName
       const password = this.userPassword
-      axios.post('/api/auth/login',{
-        name:name,
-        password:password
+      this.Login({name,password}).then(()=>{
+        this.$router.push({path:'/login'})
       })
-      .then(response =>{
-        console.log(response)
-      })
-      .catch(error=>{
-        console.log(error)
-      })
+      // this.axios.post('/api/auth/login',{
+      //   name:name,
+      //   password:password
+      // })
+      // .then(response =>{
+      //   console.log(response)
+      // })
+      // .catch(error=>{
+      //   console.log(error)
+      // })
     }
   }
 }

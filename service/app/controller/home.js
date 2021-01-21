@@ -1,34 +1,48 @@
-'use strict';
+'use strict'
 
 //实现 Controller
 
-const Controller = require('egg').Controller;
+const Controller = require('egg').Controller
 
 class HomeController extends Controller {
   async index() {
-    const { ctx } = this;
-    ctx.body = 'hi, egg';
+    const { ctx } = this
+    ctx.body = 'hi, egg'
   }
   //注册接口
   async register() {
-    const { ctx } = this;
+    const { ctx } = this
 
-    const result = await ctx.service.user.addUser();
+    const result = await ctx.service.user.addUser()
     //接口返回的数据
-    ctx.body =  result
+    ctx.body = result
     ctx.status = 200
   }
+  //登录接口
   async login() {
-    const { ctx } = this;
-    const result = await ctx.service.user.find();
+    const { ctx } = this
+    const result = await ctx.service.user.find(ctx.request.body)
+    console.log(result)
     //接口返回的数据
-    ctx.body =  result
+    if (result.user) {
+      ctx.body = {
+        result: {
+          username: result.user.username,
+          id: result.user.userid,
+          token: 'sadasdasda'
+        }
+      }
+    } else {
+      ctx.body = {
+        error: '用户不存在'
+      }
+    }
     ctx.status = 200
   }
   //注销接口
   // async logout() {
   //   const { ctx } = this;
-  //   ctx.body =  
+  //   ctx.body =
   //   {
   //     message: '[测试接口] 注销成功',
   //     timestamp: 0,
@@ -63,7 +77,7 @@ class HomeController extends Controller {
   // //第二步，通过手机登录
   // async twofactor() {
   //   const { ctx } = this;
-  //   ctx.body =  
+  //   ctx.body =
   //   {
   //     message: '登录成功',
   //     timestamp: 0,
@@ -92,7 +106,7 @@ class HomeController extends Controller {
   // //获取验证码接口
   // async sms() {
   //   const { ctx } = this;
-  //   ctx.body =  
+  //   ctx.body =
   //   {
   //     message: '登录成功',
   //     timestamp: 0,
@@ -120,4 +134,4 @@ class HomeController extends Controller {
   // }
 }
 
-module.exports = HomeController;
+module.exports = HomeController

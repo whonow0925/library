@@ -13,7 +13,7 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/homePage',
+    redirect: '/userLogin',
     children: [
       // dashboard
       {
@@ -367,12 +367,12 @@ export const constantRouterMap = [
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'userLogin',
     component: () => import(/* webpackChunkName: "homePage" */ '@/views/login/login')
   },
   {
     path: '/register',
-    name: 'register',
+    name: 'useRegister',
     component: () => import(/* webpackChunkName: "homePage" */ '@/views/register/register')
   },
   {

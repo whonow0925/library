@@ -9,9 +9,10 @@ class UserService extends Service {
     return { result };
   }
 
-  async find() {
+  async find({name:username, password}) {
+    console.log(username, password)
     // 假如 我们拿到用户 id 从数据库获取用户详细信息
-    const user = await this.app.mysql.get('user', { name: '张三' });
+    const user = await this.app.mysql.get('user', { username,password } );
     return { user };
   }
 }
