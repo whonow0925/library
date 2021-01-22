@@ -85,7 +85,7 @@
                       </a-list-item>
                     </a-list> -->
                     <div class="book">
-                      <div id="content">
+                      <div id="content" >
                         <ul v-for="(item, index) in rankList" :key="index">
                           <li>
                             <span>{{ index + 1 }}</span>
@@ -164,8 +164,8 @@ export default {
   watch: {
     rankTop(val) {
       // console.log(val,55)
-      document.getElementById('content').style.top = `${val}px`
-      if(val < this.rankList.length*-11){
+      // document.getElementById('content').style.top = `${val}px`
+      if(val < this.rankList.length*-35){
         // console.log('该停止啦')
         clearInterval(this.timer)
         this.timer=null
@@ -314,7 +314,7 @@ export default {
       if (this.timer == null) {
         this.timer = setInterval(() => {
           this.rankTop -= 5
-        }, 2000)
+        }, 500)
       }
     }
   },
@@ -491,6 +491,16 @@ img {
           #content {
             position: relative;
             top: 0px;
+            // transition: 0.3s all ease-in-out;
+            animation: slide 7s infinite;
+           @keyframes slide {
+             0%{
+               top: 0px
+             }
+             100%{
+               top: -40%;
+             }
+           }
             span {
               margin: 5px 10px;
             }
