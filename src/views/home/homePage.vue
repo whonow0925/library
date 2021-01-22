@@ -85,14 +85,20 @@
                       </a-list-item>
                     </a-list> -->
                     <div class="book">
-                      <ul v-for="(item, index) in rankList" :key="index">
-                        <li>
-                          <span>{{ index + 1 }}</span>
-                          <span class="bookName">{{ item.bookName }}</span>
-                          <span>{{ item.writer }}</span>
-                          <span>简介：{{ item.describe.length > 38 ? item.describe.slice(0, 38) + '...' : item.describe }}</span>
-                        </li>
-                      </ul>
+                      <div id="content">
+                        <ul v-for="(item, index) in rankList" :key="index">
+                          <li>
+                            <span>{{ index + 1 }}</span>
+                            <span class="bookName">{{ item.bookName }}</span>
+                            <span>{{ item.writer }}</span>
+                            <span
+                            >简介：{{
+                              item.describe.length > 38 ? item.describe.slice(0, 38) + '...' : item.describe
+                            }}</span
+                            >
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </a-col>
@@ -155,6 +161,19 @@ export default {
   components: {
     navigation
   },
+  watch: {
+    rankTop(val) {
+      // console.log(val,55)
+      document.getElementById('content').style.top = `${val}px`
+      if(val < this.rankList.length*-11){
+        // console.log('该停止啦')
+        clearInterval(this.timer)
+        this.timer=null
+        this.rankTop=0
+        this.setTimer(this.timer)
+      }
+    }
+  },
   mounted() {
     // console.log(this.$store.getters)
     if (this.$store.getters.token) {
@@ -171,9 +190,14 @@ export default {
       .catch(error => {
         console.log(error)
       })
+    this.setTimer(this.timer)
   },
   data() {
     return {
+      //定时器参数
+      timer: null,
+      //列表滚动top值
+      rankTop:0,
       isLogin: false,
       //被选中服务的index下标数
       // optionNumber: 1,
@@ -285,7 +309,18 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+    setTimer() {
+      if (this.timer == null) {
+        this.timer = setInterval(() => {
+          this.rankTop -= 5
+        }, 2000)
+      }
     }
+  },
+  destroyed() {
+    clearInterval(this.timer)
+    this.timer = null
   }
 }
 </script>
@@ -436,7 +471,10 @@ img {
         // height: 380px;
         text-align: left;
         height: 250px;
-        overflow: hidden;
+        // height: calc(100%-10px);
+        // position: relative;
+        // overflow: hidden;
+        // position: absolute;
         .title {
           margin-left: 20px;
           font-size: 28px;
@@ -445,14 +483,21 @@ img {
           color: skyblue;
           font-weight: 800;
         }
-        .book{
+        .book {
           font-size: 15px;
-          span{
-            margin: 5px 10px;
-          }
-          .bookName{
-            background: pink;
-            border-radius: 10px;
+          height: 180px;
+          position: relative;
+          overflow: hidden;
+          #content {
+            position: relative;
+            top: 0px;
+            span {
+              margin: 5px 10px;
+            }
+            .bookName {
+              background: pink;
+              border-radius: 10px;
+            }
           }
         }
       }
