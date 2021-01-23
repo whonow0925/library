@@ -39,6 +39,7 @@
                 </div>
                 <a-input-search
                   placeholder="输入想要查找的书籍"
+                  v-model="searchBookName"
                   enter-button="search"
                   @search="onSearch"
                   style="width:500px;margin:0 10px"
@@ -194,6 +195,7 @@ export default {
   },
   data() {
     return {
+      searchBookName:'',
       //定时器参数
       timer: null,
       //列表滚动top值
@@ -305,6 +307,7 @@ export default {
         .then(response => {
           console.log(response)
           this.$message.warning(response.data.msg)
+          this.searchBookName=''
         })
         .catch(error => {
           console.log(error)

@@ -51,7 +51,7 @@ class HomeController extends Controller {
   async searchBook() {
     const { ctx } = this
     const result = await ctx.service.user.searchBook(ctx.request.body)
-    if (result.result) {
+    if (result.result.length>0) {
       ctx.body = {
         msg: '找到这本书了，等下帮你转页面'
       }
@@ -73,9 +73,9 @@ class HomeController extends Controller {
   //在线阅读页面书籍分类接口
   async bookSort() {
     const { ctx } = this
-    console.log(ctx.request,aaa);
+    // console.log(ctx.request,'aaa');
     const result = await ctx.service.user.bookClassify(ctx.request.body)
-    // console.log(result);
+    console.log(result,1111);
     ctx.body = result
     ctx.status = 200
   }

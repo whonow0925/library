@@ -17,7 +17,9 @@ class UserService extends Service {
   }
 
   async searchBook({bookName}){
-    const result = await this.app.mysql.get('books',{bookName})
+    let sql =`select * from bookRank where bookName like "%${bookName}%"`
+    const result = await this.app.mysql.query(sql)
+    console.log(result)
     return {result}
   }
 
@@ -26,8 +28,8 @@ class UserService extends Service {
     return {result}
   }
 
-  async bookClassify(bookType){
-    const result = await this.app.mysql.get('bookRank',{bookType})
+  async bookClassify({bookType}){
+    const result = await this.app.mysql.select('bookRank',{ where:{bookType}})
     return {result}
   }
 }

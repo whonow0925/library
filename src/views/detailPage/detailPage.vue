@@ -1,6 +1,6 @@
 <template>
   <div class="detailPage">
-    <navigation></navigation>
+    <navigation :isLogin="isLogin"></navigation>
     <div class="header">
       <img src="./images/header-image2.png" alt="" />
     </div>
@@ -418,6 +418,9 @@ export default {
     }
   },
   mounted() {
+    if (this.$store.getters.token) {
+      this.isLogin = true
+    }
     this.noTitleKey= this.$route.query.name
   },
   methods: {

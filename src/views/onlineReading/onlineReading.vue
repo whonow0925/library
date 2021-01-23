@@ -1,30 +1,19 @@
 <template>
   <div class="onlineReading">
     <navigation :isLogin="isLogin"></navigation>
-    <!-- <div class="bookCard">
-      <a-card hoverable style="width: 300px;margin:40px 5px" v-for="item in bookList" :key="item.id">
-        <img slot="cover" alt="example" :src="require(`./images/${item.imageName}.jpg`)" />
-        <template slot="actions" class="ant-card-actions">
-          <div @click="readingDetail(item)">在线阅读</div>
-          <div>借阅</div>
-          <div>评价</div>
-        </template>
-        <a-card-meta :title="item.bookName" :description="item.description"> </a-card-meta>
-      </a-card>
-    </div> -->
     <div class="content">
       <a-row>
         <a-col :span="4">
           <div class="bookClassify">
-            <ul v-for="(item, index) in bookClassify" :key="index" >
-              <span @click="classify(item,index)" :class="{active:index==isActive}">{{ item }}</span>
+            <ul v-for="(item, index) in bookClassify" :key="index">
+              <span @click="classify(item, index)" :class="{ active: index == isActive }">{{ item }}</span>
             </ul>
           </div>
         </a-col>
         <a-col :span="20">
           <div class="bookContent">
-            <div class="book" v-for="item in bookList" :key="item.bookId">
-              <div class="bookNumber">{{ item.bookId }}</div>
+            <div class="book" v-for="(item, index) in bookList" :key="index">
+              <div class="bookNumber">{{ index + 1 }}</div>
               <div class="bookImage"><img src="./images/天才在左疯子在右.jpg" alt="" /></div>
               <div class="introduction">
                 <ul>
@@ -33,13 +22,22 @@
                   <span class="writer">{{ item.press }}</span>
                   <span class="writer">{{ item.bookType }}</span>
                   <li>简介：{{ item.describe }}</li>
-                  <li class="more"><a href="">{{ item.type }}</a></li>
+                  <li class="more" @click="toDetail(item)">
+                    <span>{{ item.type }}</span>
+                  </li>
                 </ul>
               </div>
             </div>
           </div>
         </a-col>
       </a-row>
+    </div>
+    <div>
+      <a-modal v-model="visible" title="Basic Modal">
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </a-modal>
     </div>
   </div>
 </template>
@@ -49,7 +47,7 @@ import navigation from '@/components/Navigation/navigation'
 // import Navigation from '@/components/Navigation/navigation.vue'
 export default {
   components: {
-    navigation
+    navigation,
     // Navigation
   },
   mounted() {
@@ -58,41 +56,70 @@ export default {
     }
     this.$axios
       .get('/api/book/bookRank')
-      .then(response => {
+      .then((response) => {
         // console.log(response.data.result,22)
         for (var i = 0; i < response.data.result.length; i++) {
           this.bookList.push(response.data.result[i])
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error)
       })
   },
   data() {
     return {
-      isActive:0,
+      visible: false,
+      isActive: 0,
       isLogin: false,
       //书籍分类
-      bookClassify: ['全部','文学艺术', '科幻小说', '经典小说', '影视小说','个人成长'],
-      bookList: []
+      bookClassify: ['全部', '文学艺术', '科幻小说', '经典小说', '影视小说', '个人成长'],
+      bookList: [],
     }
   },
   methods: {
-    classify(bookClassify,index){
-      console.log(bookClassify,index)
-      this.isActive=index
+    classify(bookClassify, index) {
+      console.log(bookClassify, index)
+      this.isActive = index
       const bookType = bookClassify
-      this.$axios
-      .post('/api/book/bookSort',{
-        bookType : bookType
-      })
-      .then(response => {
-        console.log(response,22)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    }
+      if (bookType == '全部') {
+        this.bookList = []
+        this.$axios
+          .get('/api/book/bookRank')
+          .then((response) => {
+            // console.log(response.data.result,22)
+            for (var i = 0; i < response.data.result.length; i++) {
+              this.bookList.push(response.data.result[i])
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      } else {
+        this.$axios
+          .post('/api/book/bookSort', {
+            bookType: bookType,
+          })
+          .then((response) => {
+            // console.log(response.data.result, 22)
+            this.bookList = response.data.result
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      }
+    },
+    toDetail(item) {
+      if (item.type == '在线阅读') {
+        this.$router.push({ path: '/bookDetail', query: { bookName: item.bookName } })
+      } else if (item.type == '借阅') {
+        console.log(this.isLogin, 111)
+        if (this.isLogin) {
+          this.visible = true
+        } else {
+          this.$router.push({ path: '/login' })
+        }
+      }
+    },
     // readingDetail(item) {
     //   this.$router.push({
     //     path: './bookDetail',
@@ -104,7 +131,7 @@ export default {
     //     }
     //   })
     // },
-  }
+  },
 }
 </script>
 
@@ -124,14 +151,21 @@ export default {
       margin-top: 70px;
       border-radius: 20px;
       // margin:60px 10px;
-      span{
-        font-size: 20px;
+      span {
+        font-size: 18px;
         // background-color: pink;
-        border-radius: 10px;
-      }
-      .active{
-        background-color: rgb(179, 220, 236);
-        border-radius: 20px;
+        border-radius: 16px;
+        padding: 2px 12px;
+        cursor: pointer;
+        margin-bottom: 12px;
+        display: block;
+        &:hover {
+          background-color: rgb(179, 220, 236);
+        }
+        &.active {
+          background-color: rgb(179, 220, 236);
+         
+        }
       }
     }
     .bookContent {
@@ -146,7 +180,7 @@ export default {
         background-color: rgb(247, 245, 243);
         border-radius: 20px;
         margin: 10px;
-        .bookNumber{
+        .bookNumber {
           margin: auto 20px;
         }
         .bookImage {
@@ -156,20 +190,22 @@ export default {
             height: 150px;
           }
         }
-        .introduction{
+        .introduction {
           // margin-right: 20px;
           margin: 10px 20px 10px 0;
-          .name{
+          .name {
             font-size: 20px;
             font-weight: 700;
           }
-          .writer{
+          .writer {
             background-color: pink;
             border-radius: 14px;
             margin: 0 10px;
           }
-          .more{
+          .more {
             margin-top: 10px;
+            color: rgb(40, 125, 221);
+            font-weight: 500;
           }
         }
       }
