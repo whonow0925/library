@@ -85,7 +85,7 @@
                       </a-list-item>
                     </a-list> -->
                     <div class="book">
-                      <div id="content" >
+                      <div id="content">
                         <ul v-for="(item, index) in rankList" :key="index">
                           <li>
                             <span>{{ index + 1 }}</span>
@@ -165,11 +165,11 @@ export default {
     rankTop(val) {
       // console.log(val,55)
       // document.getElementById('content').style.top = `${val}px`
-      if(val < this.rankList.length*-35){
+      if (val < this.rankList.length * -35) {
         // console.log('该停止啦')
         clearInterval(this.timer)
-        this.timer=null
-        this.rankTop=0
+        this.timer = null
+        this.rankTop = 0
         this.setTimer(this.timer)
       }
     }
@@ -197,7 +197,7 @@ export default {
       //定时器参数
       timer: null,
       //列表滚动top值
-      rankTop:0,
+      rankTop: 0,
       isLogin: false,
       //被选中服务的index下标数
       // optionNumber: 1,
@@ -493,14 +493,14 @@ img {
             top: 0px;
             // transition: 0.3s all ease-in-out;
             animation: slide 7s infinite;
-           @keyframes slide {
-             0%{
-               top: 0px
-             }
-             100%{
-               top: -40%;
-             }
-           }
+            @keyframes slide {
+              0% {
+                top: 0px;
+              }
+              100% {
+                top: -40%;
+              }
+            }
             span {
               margin: 5px 10px;
             }

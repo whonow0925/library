@@ -16,8 +16,8 @@
       <a-row>
         <a-col :span="4">
           <div class="bookClassify">
-            <ul v-for="(item, index) in bookClassify" :key="index">
-              <span>{{ item }}</span>
+            <ul v-for="(item, index) in bookClassify" :key="index" >
+              <span @click="classify(item,index)" :class="{active:index==isActive}">{{ item }}</span>
             </ul>
           </div>
         </a-col>
@@ -70,6 +70,7 @@ export default {
   },
   data() {
     return {
+      isActive:0,
       isLogin: false,
       //书籍分类
       bookClassify: ['全部','文学艺术', '科幻小说', '经典小说', '影视小说','个人成长'],
@@ -77,6 +78,21 @@ export default {
     }
   },
   methods: {
+    classify(bookClassify,index){
+      console.log(bookClassify,index)
+      this.isActive=index
+      const bookType = bookClassify
+      this.$axios
+      .post('/api/book/bookSort',{
+        bookType : bookType
+      })
+      .then(response => {
+        console.log(response,22)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
     // readingDetail(item) {
     //   this.$router.push({
     //     path: './bookDetail',
@@ -112,6 +128,10 @@ export default {
         font-size: 20px;
         // background-color: pink;
         border-radius: 10px;
+      }
+      .active{
+        background-color: rgb(179, 220, 236);
+        border-radius: 20px;
       }
     }
     .bookContent {

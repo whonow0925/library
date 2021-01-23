@@ -65,7 +65,17 @@ class HomeController extends Controller {
   async bookRank() {
     const { ctx } = this
     const result = await ctx.service.user.bookRank()
-    console.log(result,111);
+    // console.log(result,111);
+    ctx.body = result
+    ctx.status = 200
+  }
+
+  //在线阅读页面书籍分类接口
+  async bookSort() {
+    const { ctx } = this
+    console.log(ctx.request,aaa);
+    const result = await ctx.service.user.bookClassify(ctx.request.body)
+    // console.log(result);
     ctx.body = result
     ctx.status = 200
   }
