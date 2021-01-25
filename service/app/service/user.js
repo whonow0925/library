@@ -17,6 +17,7 @@ class UserService extends Service {
   }
 
   async searchBook({bookName}){
+    //解决模糊查找
     let sql =`select * from bookRank where bookName like "%${bookName}%"`
     const result = await this.app.mysql.query(sql)
     console.log(result)
@@ -29,7 +30,13 @@ class UserService extends Service {
   }
 
   async bookClassify({bookType}){
+    //where解决返回不到全部符合条件的数据
     const result = await this.app.mysql.select('bookRank',{ where:{bookType}})
+    return {result}
+  }
+
+  async news(){
+    const result = await this.app.mysql.select('news')
     return {result}
   }
 }

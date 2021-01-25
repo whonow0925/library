@@ -71,10 +71,10 @@
                       <th class="new_title">本馆新闻</th>
                     </tr>
                     <tr v-for="(item, index) in newsList" :key="item.id">
-                      <td style="width:75px">{{ item.time }}</td>
+                      <td style="width:75px">{{ item.date }}</td>
                       <td :class="item.type == '新闻' ? 'advertising' : 'notice'">{{ item.type }}</td>
                       <a class="content" @click="showModal(index)">
-                        {{ item.content.length > 18 ? item.content.slice(0, 18) + '...' : item.content }}
+                        {{ item.title.length > 18 ? item.title.slice(0, 18) + '...' : item.title }}
                       </a>
                     </tr>
                   </table>
@@ -96,8 +96,8 @@
       </a-card>
     </div>
     <div class="newsModal">
-      <a-modal v-model="visible" :title="this.newsList[newsId].content" :footer="null">
-        <p>{{ this.newsList[newsId].newsDetail }}</p>
+      <a-modal v-model="visible" :title="this.newsList[newsId].title" :footer="null">
+        <p>{{ this.newsList[newsId].content }}</p>
         <div class="modalButton">
           <a-button type="primary" @click="closeModal">关闭详情</a-button>
         </div>
@@ -338,39 +338,11 @@ export default {
       }
     ]
     return {
+      isLogin: false,
       newsId: 1,
       visible: false,
       //吉珠新闻列表
-      newsList: [
-        {
-          id: 1,
-          time: '2019-1-23',
-          type: '新闻',
-          content: '我校图书馆受邀参加《珠海商贸史料辑录》首发式',
-          newsDetail: '111'
-        },
-        {
-          id: 2,
-          time: '2019-1-23',
-          type: '公告',
-          content: '我校图书馆受邀参加《珠海商贸史料辑录》首发式',
-          newsDetail: '2222'
-        },
-        {
-          id: 3,
-          time: '2019-1-23',
-          type: '新闻',
-          content: '我校图书馆受邀参加《珠海商贸史料辑录》首发式',
-          newsDetail: '3333'
-        },
-        {
-          id: 4,
-          time: '2019-1-23',
-          type: '新闻',
-          content: '我校图书馆受邀参加《珠海商贸史料辑录》首发式',
-          newsDetail: '1144441'
-        }
-      ],
+      newsList: [],
       columns_connect,
       connectData, //联系我们的table数据
       data,
@@ -421,12 +393,12 @@ export default {
     if (this.$store.getters.token) {
       this.isLogin = true
     }
-    this.noTitleKey= this.$route.query.name
+    this.noTitleKey = this.$route.query.name
   },
   methods: {
     showMap() {
       var map = new window.BMap.Map('allmap') // 创建Map实例
-      map.centerAndZoom(new window.BMap.Point(113.413181,22.058085), 18) // 初始化地图,设置中心点坐标和地图级别
+      map.centerAndZoom(new window.BMap.Point(113.413181, 22.058085), 18) // 初始化地图,设置中心点坐标和地图级别
       //添加地图类型控件
       map.addControl(
         new window.BMap.MapTypeControl({
@@ -436,10 +408,20 @@ export default {
       map.setCurrentCity('珠海') // 设置地图显示的城市 此项是必须设置的
       map.enableScrollWheelZoom(true)
     },
+    showNews() {
+      this.$axios
+        .get('/api/news/news')
+        .then(response => {
+          console.log(response.data.result, 22)
+            this.newsList = response.data.result
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
     onTabChange(key, type) {
       console.log(key, type)
       this.noTitleKey = key
-
     },
     showModal(index) {
       this.visible = true
@@ -452,19 +434,26 @@ export default {
   },
   watch: {
     noTitleKey(val) {
-      if(val === '交通指南') {
+      if (val === '交通指南') {
         this.$nextTick(() => {
           this.showMap()
         })
+      } else if (val === '吉珠新闻') {
+        this.$nextTick(() => {
+          this.showNews()
+        })
       }
     }
-  },
+  }
 }
 </script>
 
 <style lang="less" scoped>
 /* @import url('https://fonts.font.im/css?family=Hanalei+Fill'); */
-
+.ant-modal-header{
+  text-align: center;
+  font-size: 20px;
+}
 .ant-card-head {
   display: flex;
   align-items: center;
@@ -493,7 +482,7 @@ export default {
     }
     .allmap {
       width: 100%;
-      height:500px;
+      height: 500px;
       overflow: hidden;
       margin: 0;
       font-family: '微软雅黑';

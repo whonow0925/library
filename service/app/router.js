@@ -13,4 +13,5 @@ module.exports = app => {
   router.post('/api/book/searchBook',controller.home.searchBook);//首页查找书籍接口
   router.get('/api/book/bookRank',controller.home.bookRank);//好书推荐书籍接口
   router.post('/api/book/bookSort',controller.home.bookSort);//在线阅读页面书籍分类接口
+  router.get('/api/news/news',controller.home.news);//吉珠新闻接口
 };

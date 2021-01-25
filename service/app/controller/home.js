@@ -79,6 +79,15 @@ class HomeController extends Controller {
     ctx.body = result
     ctx.status = 200
   }
+
+    //吉珠新闻展示接口
+    async news() {
+      const { ctx } = this
+      const result = await ctx.service.user.news()
+      // console.log(result,111);
+      ctx.body = result
+      ctx.status = 200
+    }
   //注销接口
   // async logout() {
   //   const { ctx } = this;

@@ -495,6 +495,7 @@ img {
             position: relative;
             top: 0px;
             // transition: 0.3s all ease-in-out;
+            //动画
             animation: slide 7s infinite;
             @keyframes slide {
               0% {
