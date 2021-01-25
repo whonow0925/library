@@ -52,11 +52,9 @@ class HomeController extends Controller {
     const { ctx } = this
     const result = await ctx.service.user.searchBook(ctx.request.body)
     if (result.result.length>0) {
-      ctx.body = {
-        msg: '找到这本书了，等下帮你转页面'
-      }
+      ctx.body = result
     } else {
-      ctx.body = { msg: '查无此书' }
+      ctx.body = { msg: '暂时没有找到你想要的书籍哦~' }
     }
     ctx.status = 200
   }

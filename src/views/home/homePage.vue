@@ -21,29 +21,29 @@
                 </div>
               </div>
               <div class="search">
-                <!-- <a-dropdown>
-                  <a-button style="border-radius:12px">书籍类型</a-button>
-                  <a-menu slot="overlay">
-                    <a-menu-item>
-                      <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">在线阅读</a>
-                    </a-menu-item>
-                    <a-menu-item>
-                      <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">借阅书籍</a>
-                    </a-menu-item>
-                  </a-menu>
-                </a-dropdown> -->
                 <div class="icons-list">
                   <a-icon type="smile" theme="twoTone" />
                   <a-icon type="heart" theme="twoTone" two-tone-color="#eb2f96" />
                   <a-icon type="check-circle" theme="twoTone" two-tone-color="#52c41a" />
                 </div>
-                <a-input-search
-                  placeholder="输入想要查找的书籍"
-                  v-model="searchBookName"
-                  enter-button="search"
-                  @search="onSearch"
-                  style="width:500px;margin:0 10px"
-                />
+                <div class="search-box" style="width: 500px; margin: 0 10px">
+                  <a-input-search
+                    placeholder="输入想要查找的书籍"
+                    v-model="searchBookName"
+                    @search="onSearch"
+                    @change="pressEnter"
+                  />
+                  <div class="searchResult" v-if="searchBookName">
+                    <ul v-if="searchResult.length> 0 ">
+                      <li @click="toDetail(item.bookId)" v-for="item in searchResult" :key="item.bookId">
+                        {{ item.bookName }} -- {{ item.writer }} -- {{ item.bookType }}
+                      </li>
+                    </ul>
+                    <span v-else >
+                      搜索不到
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -59,14 +59,14 @@
                   </swiper-slide>
                 </swiper> -->
                 <swiper :options="bookSwiperOption" class="swiper-container">
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt=""/></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt=""/></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt=""/></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt=""/></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt=""/></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt=""/></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt=""/></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt="" /></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt="" /></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt="" /></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt="" /></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt="" /></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt="" /></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt="" /></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt="" /></swiper-slide>
                 </swiper>
               </div>
               <!-- 书籍排行榜 -->
@@ -135,12 +135,12 @@
                 <a-col :span="12">
                   <a-card class="optionCard">
                     <a-card-grid
-                      style="width:33.3%;text-align:center;height:166px"
+                      style="width: 33.3%; text-align: center; height: 166px"
                       v-for="(item, index) in optionList"
                       :key="index"
                       @click="goAbout(item.name)"
                     >
-                      <div style="margin:10px 20px"><img :src="require(`./images/${item.src}.png`)" /></div>
+                      <div style="margin: 10px 20px"><img :src="require(`./images/${item.src}.png`)" /></div>
                       <p>{{ item.name }}</p>
                     </a-card-grid>
                   </a-card>
@@ -160,7 +160,7 @@
 import navigation from '@/components/Navigation/navigation'
 export default {
   components: {
-    navigation
+    navigation,
   },
   watch: {
     rankTop(val) {
@@ -173,7 +173,7 @@ export default {
         this.rankTop = 0
         this.setTimer(this.timer)
       }
-    }
+    },
   },
   mounted() {
     // console.log(this.$store.getters)
@@ -182,20 +182,22 @@ export default {
     }
     this.$axios
       .get('/api/book/bookRank')
-      .then(response => {
+      .then((response) => {
         // console.log(response.data.result,22)
         for (var i = 0; i < response.data.result.length; i++) {
           this.rankList.push(response.data.result[i])
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error)
       })
     this.setTimer(this.timer)
   },
   data() {
     return {
-      searchBookName:'',
+      //查询结果
+      searchResult: [],
+      searchBookName: '',
       //定时器参数
       timer: null,
       //列表滚动top值
@@ -207,40 +209,40 @@ export default {
       optionList: [
         {
           name: '开放时间',
-          src: '时间'
+          src: '时间',
         },
         {
           name: '交通指南',
-          src: '交通(1)'
+          src: '交通(1)',
         },
         {
           name: '馆舍平面',
-          src: '平面图设计'
+          src: '平面图设计',
         },
         {
           name: '入馆须知',
-          src: '须知'
+          src: '须知',
         },
         {
           name: '项目服务',
-          src: '服务'
+          src: '服务',
         },
         {
           name: '借阅规则',
-          src: '规则'
+          src: '规则',
         },
         {
           name: '吉珠新闻',
-          src: '新闻报纸，new'
+          src: '新闻报纸，new',
         },
         {
           name: '发展规划',
-          src: '规划'
+          src: '规划',
         },
         {
           name: '联系我们',
-          src: '媒体报道'
-        }
+          src: '媒体报道',
+        },
       ],
       //书籍排行榜单
       rankList: [],
@@ -252,7 +254,7 @@ export default {
         './images/4.jpg',
         './images/5.jpg',
         './images/6.jpg',
-        './images/7.jpg'
+        './images/7.jpg',
       ],
       //猜你喜欢的书籍
       loverList: [],
@@ -260,8 +262,8 @@ export default {
         direction: 'vertical',
         pagination: {
           el: '.swiper-pagination',
-          clickable: true
-        }
+          clickable: true,
+        },
       },
       bookSwiperOption: {
         autoplay: true,
@@ -274,44 +276,58 @@ export default {
           stretch: 0,
           depth: 100,
           modifier: 1,
-          slideShadows: true
+          slideShadows: true,
         },
         // pagination: {
         //   el: '.swiper-pagination'
         // }
         navigation: {
           nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
-        }
-      }
+          prevEl: '.swiper-button-prev',
+        },
+      },
     }
   },
   methods: {
+    toDetail(bookId) {
+      this.$router.push({ path: '/bookDetail', query: { id: bookId } })
+    },
     goAbout(optionName) {
       this.$router.push({
         path: '/detailPage',
         query: {
-          name: optionName
-        }
+          name: optionName,
+        },
       })
       // console.log(optionName,'111')
     },
     // 书籍查找
     onSearch(value) {
+      this.searchResult = []
       console.log(value)
       const bookName = value
       this.$axios
         .post('/api/book/searchBook', {
-          bookName: bookName
+          bookName: bookName,
         })
-        .then(response => {
-          console.log(response)
-          this.$message.warning(response.data.msg)
-          this.searchBookName=''
+        .then((response) => {
+          console.log(response.data.result, 4444)
+          if (response.data.result) {
+            for (var i = 0; i < response.data.result.length; i++) {
+              this.searchResult.push(response.data.result[i])
+            }
+          } else {
+            this.$message.warning(response.data.msg)
+            this.searchResult = []
+          }
+          this.searchBookName = ''
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
+    },
+    pressEnter() {
+      this.searchResult = []
     },
     setTimer() {
       if (this.timer == null) {
@@ -319,12 +335,12 @@ export default {
           this.rankTop -= 5
         }, 500)
       }
-    }
+    },
   },
   destroyed() {
     clearInterval(this.timer)
     this.timer = null
-  }
+  },
 }
 </script>
 
@@ -424,6 +440,43 @@ img {
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+      .search-box {
+        position: relative;
+        .searchResult::-webkit-scrollbar{
+          width: 0;
+          height: 0;
+        }
+        .searchResult {
+          margin: 10px auto;
+          width: 100%;
+          height: 100px;
+          overflow: auto;
+          position: absolute;
+          top: 22px;
+          left: 0;
+          background-color: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+         ul {
+           margin: 0;
+           padding: 0;
+         }
+          li {
+            margin-top: 12px;
+            background-color: skyblue;
+            border-radius: 5px;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            cursor: pointer;
+            &:hover {
+              background-color: pink;
+            }
+          }
+        }
+      }
     }
   }
   .secondPage {

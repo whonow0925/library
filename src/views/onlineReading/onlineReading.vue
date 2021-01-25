@@ -14,7 +14,7 @@
           <div class="bookContent">
             <div class="book" v-for="(item, index) in bookList" :key="index">
               <div class="bookNumber">{{ index + 1 }}</div>
-              <div class="bookImage"><img src="./images/天才在左疯子在右.jpg" alt="" /></div>
+              <div class="bookImage"><img :src="item.image" alt="" /></div>
               <div class="introduction">
                 <ul>
                   <li class="name">{{ item.bookName }}</li>
@@ -47,7 +47,7 @@ import navigation from '@/components/Navigation/navigation'
 // import Navigation from '@/components/Navigation/navigation.vue'
 export default {
   components: {
-    navigation,
+    navigation
     // Navigation
   },
   mounted() {
@@ -56,13 +56,13 @@ export default {
     }
     this.$axios
       .get('/api/book/bookRank')
-      .then((response) => {
+      .then(response => {
         // console.log(response.data.result,22)
         for (var i = 0; i < response.data.result.length; i++) {
           this.bookList.push(response.data.result[i])
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error)
       })
   },
@@ -73,7 +73,7 @@ export default {
       isLogin: false,
       //书籍分类
       bookClassify: ['全部', '文学艺术', '科幻小说', '经典小说', '影视小说', '个人成长'],
-      bookList: [],
+      bookList: []
     }
   },
   methods: {
@@ -85,32 +85,32 @@ export default {
         this.bookList = []
         this.$axios
           .get('/api/book/bookRank')
-          .then((response) => {
+          .then(response => {
             // console.log(response.data.result,22)
             for (var i = 0; i < response.data.result.length; i++) {
               this.bookList.push(response.data.result[i])
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error)
           })
       } else {
         this.$axios
           .post('/api/book/bookSort', {
-            bookType: bookType,
+            bookType: bookType
           })
-          .then((response) => {
+          .then(response => {
             // console.log(response.data.result, 22)
             this.bookList = response.data.result
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error)
           })
       }
     },
     toDetail(item) {
       if (item.type == '在线阅读') {
-        this.$router.push({ path: '/bookDetail', query: { bookName: item.bookName } })
+        this.$router.push({ path: '/bookDetail', query: { id: item.bookId } })
       } else if (item.type == '借阅') {
         console.log(this.isLogin, 111)
         if (this.isLogin) {
@@ -119,7 +119,7 @@ export default {
           this.$router.push({ path: '/login' })
         }
       }
-    },
+    }
     // readingDetail(item) {
     //   this.$router.push({
     //     path: './bookDetail',
@@ -131,7 +131,7 @@ export default {
     //     }
     //   })
     // },
-  },
+  }
 }
 </script>
 
@@ -164,7 +164,6 @@ export default {
         }
         &.active {
           background-color: rgb(179, 220, 236);
-         
         }
       }
     }
@@ -186,8 +185,8 @@ export default {
         .bookImage {
           margin: 20px 20px;
           img {
-            width: 150px;
-            height: 150px;
+            width: 140px;
+            height: 170px;
           }
         }
         .introduction {
@@ -203,9 +202,14 @@ export default {
             margin: 0 10px;
           }
           .more {
+            font-size: 15px;
             margin-top: 10px;
             color: rgb(40, 125, 221);
             font-weight: 500;
+            cursor: pointer;
+            // &:hover {
+            //   color: pink;
+            // }
           }
         }
       }

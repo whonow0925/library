@@ -73,7 +73,7 @@
                     <tr v-for="(item, index) in newsList" :key="item.id">
                       <td style="width:75px">{{ item.date }}</td>
                       <td :class="item.type == '新闻' ? 'advertising' : 'notice'">{{ item.type }}</td>
-                      <a class="content" @click="showModal(index)">
+                      <a class="content" @click="showModal(index)" v-if="item.title">
                         {{ item.title.length > 18 ? item.title.slice(0, 18) + '...' : item.title }}
                       </a>
                     </tr>
@@ -95,9 +95,9 @@
         </p>
       </a-card>
     </div>
-    <div class="newsModal">
-      <a-modal v-model="visible" :title="this.newsList[newsId].title" :footer="null">
-        <p>{{ this.newsList[newsId].content }}</p>
+    <div class="newsModal" v-if="newsList[newsId]">
+      <a-modal v-model="visible" :title="newsList[newsId].title" :footer="null">
+        <p>{{ newsList[newsId].content }}</p>
         <div class="modalButton">
           <a-button type="primary" @click="closeModal">关闭详情</a-button>
         </div>
@@ -394,6 +394,7 @@ export default {
       this.isLogin = true
     }
     this.noTitleKey = this.$route.query.name
+    this.showNews()
   },
   methods: {
     showMap() {
@@ -413,7 +414,7 @@ export default {
         .get('/api/news/news')
         .then(response => {
           console.log(response.data.result, 22)
-            this.newsList = response.data.result
+          this.newsList = response.data.result
         })
         .catch(error => {
           console.log(error)
@@ -424,8 +425,8 @@ export default {
       this.noTitleKey = key
     },
     showModal(index) {
-      this.visible = true
       this.newsId = index
+      this.visible = true
       console.log(index)
     },
     closeModal() {
@@ -450,10 +451,6 @@ export default {
 
 <style lang="less" scoped>
 /* @import url('https://fonts.font.im/css?family=Hanalei+Fill'); */
-.ant-modal-header{
-  text-align: center;
-  font-size: 20px;
-}
 .ant-card-head {
   display: flex;
   align-items: center;
@@ -528,6 +525,12 @@ export default {
           text-align: center;
         }
       }
+    }
+  }
+  .newsModal {
+    .ant-modal-header {
+      text-align: center;
+      font-size: 20px;
     }
   }
 }
