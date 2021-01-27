@@ -293,7 +293,7 @@ export default {
   },
   methods: {
     toDetail(item) {
-      this.$router.push({ path: '/bookDetail', query: { id: item.bookId} , bookName:item.bookName })
+      this.$router.push({ path: '/bookDetail', query: { id: item.bookId, bookName:item.bookName}  })
     },
     goAbout(optionName) {
       this.$router.push({
