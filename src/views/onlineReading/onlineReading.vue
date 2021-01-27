@@ -110,7 +110,7 @@ export default {
     },
     toDetail(item) {
       if (item.type == '在线阅读') {
-        this.$router.push({ path: '/bookDetail', query: { id: item.bookId } })
+        this.$router.push({ path: '/bookDetail', query: { id: item.bookId , bookName:item.bookName} })
       } else if (item.type == '借阅') {
         console.log(this.isLogin, 111)
         if (this.isLogin) {

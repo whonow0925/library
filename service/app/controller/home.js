@@ -86,6 +86,8 @@ class HomeController extends Controller {
       ctx.body = result
       ctx.status = 200
     }
+
+    
   //注销接口
   // async logout() {
   //   const { ctx } = this;

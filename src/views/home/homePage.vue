@@ -35,7 +35,7 @@
                   />
                   <div class="searchResult" v-if="searchResult.length > 0">
                     <ul v-if="searchResult.length > 0">
-                      <li @click="toDetail(item.bookId)" v-for="item in searchResult" :key="item.bookId">
+                      <li @click="toDetail(item)" v-for="item in searchResult" :key="item.bookId">
                         {{ item.bookName }}
                       </li>
                     </ul>
@@ -292,8 +292,8 @@ export default {
     }
   },
   methods: {
-    toDetail(bookId) {
-      this.$router.push({ path: '/bookDetail', query: { id: bookId } })
+    toDetail(item) {
+      this.$router.push({ path: '/bookDetail', query: { id: item.bookId} , bookName:item.bookName })
     },
     goAbout(optionName) {
       this.$router.push({
