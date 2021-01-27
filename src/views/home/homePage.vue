@@ -31,7 +31,7 @@
                     placeholder="输入想要查找的书籍"
                     v-model="searchBookName"
                     @search="onSearch"
-                    @change="pressEnter"
+                    @change="pressChange"
                   />
                   <div class="searchResult" v-if="searchResult.length > 0">
                     <ul v-if="searchResult.length > 0">
@@ -309,31 +309,33 @@ export default {
       this.searchResultMessage = ''
       this.searchResult = []
       console.log(value)
-      const bookName = value
-      this.$axios
-        .post('/api/book/searchBook', {
-          bookName: bookName
-        })
-        .then(response => {
-          console.log(response.data.result, 4444)
-          if (response.data.result) {
-            for (var i = 0; i < response.data.result.length; i++) {
-              this.searchResult.push(response.data.result[i])
+      if (value) {
+        const bookName = value
+        this.$axios
+          .post('/api/book/searchBook', {
+            bookName: bookName
+          })
+          .then(response => {
+            console.log(response.data.result, 4444)
+            if (response.data.result) {
+              for (var i = 0; i < response.data.result.length; i++) {
+                this.searchResult.push(response.data.result[i])
+              }
+            } else {
+              // this.$message.warning(response.data.msg)
+              this.searchResultMessage = response.data.msg
+              // console.log( this.searchResultMessage)
             }
-          } else {
-            // this.$message.warning(response.data.msg)
-            this.searchResultMessage = response.data.msg
-            // console.log( this.searchResultMessage)
-          }
-          this.searchBookName = ''
-        })
-        .catch(error => {
-          console.log(error)
-        })
+            this.searchBookName = ''
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
     },
-    pressEnter() {
+    pressChange() {
       this.searchResult = []
-      this.searchResultMessage=''
+      this.searchResultMessage = ''
     },
     setTimer() {
       if (this.timer == null) {
