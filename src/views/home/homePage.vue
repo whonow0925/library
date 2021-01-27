@@ -33,15 +33,17 @@
                     @search="onSearch"
                     @change="pressEnter"
                   />
-                  <div class="searchResult" v-if="searchBookName">
-                    <ul v-if="searchResult.length> 0 ">
+                  <div class="searchResult" v-if="searchResult.length > 0">
+                    <ul v-if="searchResult.length > 0">
                       <li @click="toDetail(item.bookId)" v-for="item in searchResult" :key="item.bookId">
-                        {{ item.bookName }} -- {{ item.writer }} -- {{ item.bookType }}
+                        {{ item.bookName }}
                       </li>
                     </ul>
-                    <span v-else >
-                      搜索不到
-                    </span>
+                  </div>
+                  <div v-if="searchResultMessage" class="searchResultMessage">
+                    <ul>
+                      <li>{{ searchResultMessage }}</li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -59,14 +61,14 @@
                   </swiper-slide>
                 </swiper> -->
                 <swiper :options="bookSwiperOption" class="swiper-container">
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt="" /></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt="" /></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt="" /></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt="" /></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt="" /></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt="" /></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt="" /></swiper-slide>
-                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt="" /></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend1.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend2.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend3.png" alt=""/></swiper-slide>
+                  <swiper-slide class="swiper-slide"><img src="./images/recommend4.png" alt=""/></swiper-slide>
                 </swiper>
               </div>
               <!-- 书籍排行榜 -->
@@ -160,7 +162,7 @@
 import navigation from '@/components/Navigation/navigation'
 export default {
   components: {
-    navigation,
+    navigation
   },
   watch: {
     rankTop(val) {
@@ -173,7 +175,7 @@ export default {
         this.rankTop = 0
         this.setTimer(this.timer)
       }
-    },
+    }
   },
   mounted() {
     // console.log(this.$store.getters)
@@ -182,19 +184,20 @@ export default {
     }
     this.$axios
       .get('/api/book/bookRank')
-      .then((response) => {
+      .then(response => {
         // console.log(response.data.result,22)
         for (var i = 0; i < response.data.result.length; i++) {
           this.rankList.push(response.data.result[i])
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error)
       })
     this.setTimer(this.timer)
   },
   data() {
     return {
+      searchResultMessage: '',
       //查询结果
       searchResult: [],
       searchBookName: '',
@@ -209,40 +212,40 @@ export default {
       optionList: [
         {
           name: '开放时间',
-          src: '时间',
+          src: '时间'
         },
         {
           name: '交通指南',
-          src: '交通(1)',
+          src: '交通(1)'
         },
         {
           name: '馆舍平面',
-          src: '平面图设计',
+          src: '平面图设计'
         },
         {
           name: '入馆须知',
-          src: '须知',
+          src: '须知'
         },
         {
           name: '项目服务',
-          src: '服务',
+          src: '服务'
         },
         {
           name: '借阅规则',
-          src: '规则',
+          src: '规则'
         },
         {
           name: '吉珠新闻',
-          src: '新闻报纸，new',
+          src: '新闻报纸，new'
         },
         {
           name: '发展规划',
-          src: '规划',
+          src: '规划'
         },
         {
           name: '联系我们',
-          src: '媒体报道',
-        },
+          src: '媒体报道'
+        }
       ],
       //书籍排行榜单
       rankList: [],
@@ -254,7 +257,7 @@ export default {
         './images/4.jpg',
         './images/5.jpg',
         './images/6.jpg',
-        './images/7.jpg',
+        './images/7.jpg'
       ],
       //猜你喜欢的书籍
       loverList: [],
@@ -262,8 +265,8 @@ export default {
         direction: 'vertical',
         pagination: {
           el: '.swiper-pagination',
-          clickable: true,
-        },
+          clickable: true
+        }
       },
       bookSwiperOption: {
         autoplay: true,
@@ -276,16 +279,16 @@ export default {
           stretch: 0,
           depth: 100,
           modifier: 1,
-          slideShadows: true,
+          slideShadows: true
         },
         // pagination: {
         //   el: '.swiper-pagination'
         // }
         navigation: {
           nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-      },
+          prevEl: '.swiper-button-prev'
+        }
+      }
     }
   },
   methods: {
@@ -296,38 +299,41 @@ export default {
       this.$router.push({
         path: '/detailPage',
         query: {
-          name: optionName,
-        },
+          name: optionName
+        }
       })
       // console.log(optionName,'111')
     },
     // 书籍查找
     onSearch(value) {
+      this.searchResultMessage = ''
       this.searchResult = []
       console.log(value)
       const bookName = value
       this.$axios
         .post('/api/book/searchBook', {
-          bookName: bookName,
+          bookName: bookName
         })
-        .then((response) => {
+        .then(response => {
           console.log(response.data.result, 4444)
           if (response.data.result) {
             for (var i = 0; i < response.data.result.length; i++) {
               this.searchResult.push(response.data.result[i])
             }
           } else {
-            this.$message.warning(response.data.msg)
-            this.searchResult = []
+            // this.$message.warning(response.data.msg)
+            this.searchResultMessage = response.data.msg
+            // console.log( this.searchResultMessage)
           }
           this.searchBookName = ''
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
     pressEnter() {
       this.searchResult = []
+      this.searchResultMessage=''
     },
     setTimer() {
       if (this.timer == null) {
@@ -335,12 +341,12 @@ export default {
           this.rankTop -= 5
         }, 500)
       }
-    },
+    }
   },
   destroyed() {
     clearInterval(this.timer)
     this.timer = null
-  },
+  }
 }
 </script>
 
@@ -443,37 +449,68 @@ img {
       position: relative;
       .search-box {
         position: relative;
-        .searchResult::-webkit-scrollbar{
+        .searchResult::-webkit-scrollbar {
           width: 0;
           height: 0;
         }
         .searchResult {
           margin: 10px auto;
           width: 100%;
-          height: 100px;
+          // height: 108px;
           overflow: auto;
           position: absolute;
-          top: 22px;
+          top: 26px;
           left: 0;
           background-color: #fff;
           display: flex;
-          justify-content: center;
-          align-items: center;
-         ul {
-           margin: 0;
-           padding: 0;
-         }
+          opacity: 0.7;
+          // justify-content: center;
+          // align-items: center;
+          border-radius: 12px;
+          ul {
+            margin: 0;
+            padding: 0;
+          }
           li {
-            margin-top: 12px;
-            background-color: skyblue;
-            border-radius: 5px;
-            color: white;
+            // margin-top: 12px;
+            // width: 100%;
+            // height: 100px;
+            margin-left: 10px;
+            background-color: white;
+            // border-radius: 5px;
+            // color: white;
             display: flex;
             justify-content: space-around;
             cursor: pointer;
             &:hover {
-              background-color: pink;
+              color: blue;
             }
+          }
+        }
+        .searchResultMessage {
+          margin: 10px auto;
+          width: 100%;
+          // height: 108px;
+          overflow: auto;
+          position: absolute;
+          top: 26px;
+          left: 0;
+          background-color: #fff;
+          display: flex;
+          opacity: 0.7;
+          justify-content: center;
+          align-items: center;
+          border-radius: 12px;
+          ul {
+            margin: 0;
+            padding: 0;
+          }
+          li {
+            margin-left: 10px;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            cursor: pointer;
           }
         }
       }
