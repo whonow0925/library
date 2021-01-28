@@ -22,7 +22,7 @@
                   <span class="writer">{{ item.press }}</span>
                   <span class="writer">{{ item.bookType }}</span>
                   <li>简介：{{ item.describe }}</li>
-                  <li class="more" @click="toDetail(item)">
+                  <li class="more" @click="toDetail(item, index)">
                     <span>{{ item.type }}</span>
                   </li>
                 </ul>
@@ -32,11 +32,34 @@
         </a-col>
       </a-row>
     </div>
-    <div>
-      <a-modal v-model="visible" title="Basic Modal">
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+    <div v-if="bookList[bookId]">
+      <a-modal v-model="visible" :title="`是否借阅 ${bookList[bookId].bookName}`" :footer="null">
+        <a-form :form="form" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit">
+          <a-form-item label="用户名">
+            <a-input
+              v-decorator="['userName', { rules: [{ required: true, message: 'Please input your userName!' }] }]"
+            />
+          </a-form-item>
+          <a-form-item label="电话号码">
+            <a-input
+              v-decorator="['phone', { rules: [{ required: true, message: 'Please input your phoneNumber!' }] }]"
+            />
+          </a-form-item>
+          <a-form-item label="借阅时间">
+            <a-range-picker @change="onChange" v-model="borrowedTime">
+              <template slot="dateRender" slot-scope="current">
+                <div class="ant-calendar-date" :style="getCurrentStyle(current)">
+                  {{ current.date() }}
+                </div>
+              </template>
+            </a-range-picker>
+          </a-form-item>
+          <a-form-item :wrapper-col="{ span: 12, offset: 10 }">
+            <a-button type="primary" html-type="submit">
+              确认借阅
+            </a-button>
+          </a-form-item>
+        </a-form>
       </a-modal>
     </div>
   </div>
@@ -51,6 +74,7 @@ export default {
     // Navigation
   },
   mounted() {
+    // console.log(this.$store.getters,9999)
     if (this.$store.getters.token) {
       this.isLogin = true
     }
@@ -68,15 +92,76 @@ export default {
   },
   data() {
     return {
+      bookId: 1,
+      formLayout: 'horizontal',
+      form: this.$form.createForm(this, { name: 'coordinated' }),
       visible: false,
       isActive: 0,
       isLogin: false,
       //书籍分类
       bookClassify: ['全部', '文学艺术', '科幻小说', '经典小说', '影视小说', '个人成长'],
-      bookList: []
+      bookList: [],
+      borrowedTime: [],
+      //借阅信息
+      bookName: '',
+      userName: '',
+      phone: '',
+      startTime: '',
+      endTime: ''
     }
   },
   methods: {
+    //Modal的校验规则
+    handleSubmit(e) {
+      console.log(e, 111)
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.userName = values.userName
+          this.phone = values.phone
+        }
+      })
+      //判断是否登录
+      const userName = this.userName
+      const phone = this.phone
+      const startTime = this.startTime
+      const endTime = this.endTime
+      const borrowedBookName = this.bookName
+      if (this.isLogin) {
+        this.$axios
+          .post('/api/book/borrowedBook', {
+            userName: userName,
+            phone: phone,
+            startTime: startTime,
+            endTime: endTime,
+            borrowedBookName: borrowedBookName
+          })
+          .then(response => {
+            console.log(response, 345)
+            this.$message.success(response.data.msg)
+            this.resetFrom()
+            this.visible = false
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    },
+    //日期
+    getCurrentStyle(current, today) {
+      const style = {}
+      if (current.date() === 1) {
+        style.border = '1px solid #1890ff'
+        style.borderRadius = '50%'
+      }
+      return style
+    },
+    onChange(date, dateString) {
+      console.log(date, dateString, 555)
+      this.startTime = dateString[0]
+      this.endTime = dateString[1]
+    },
     classify(bookClassify, index) {
       console.log(bookClassify, index)
       this.isActive = index
@@ -108,17 +193,24 @@ export default {
           })
       }
     },
-    toDetail(item) {
-      if (item.type == '在线阅读') {
-        this.$router.push({ path: '/bookDetail', query: { id: item.bookId , bookName:item.bookName} })
-      } else if (item.type == '借阅') {
-        console.log(this.isLogin, 111)
-        if (this.isLogin) {
+    toDetail(item, index) {
+      if (this.isLogin) {
+        if (item.type == '在线阅读') {
+          this.$router.push({ path: '/bookDetail', query: { id: item.bookId, bookName: item.bookName } })
+        } else if (item.type == '借阅') {
+          console.log(this.isLogin, 111)
+          this.borrowedTime = []
           this.visible = true
-        } else {
-          this.$router.push({ path: '/login' })
+          this.bookId = index
+          this.bookName = item.bookName
         }
+      } else {
+        this.$message.warning('请先去前往登录')
+        this.$router.push({ path: '/login' })
       }
+    },
+    resetFrom() {
+      this.form.resetFields()
     }
     // readingDetail(item) {
     //   this.$router.push({

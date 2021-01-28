@@ -87,6 +87,15 @@ class HomeController extends Controller {
       ctx.status = 200
     }
 
+    //存储借阅用户的资料
+    async borrowedBook() {
+      const { ctx } = this
+      const result = await ctx.service.user.borrowedBook(ctx.request.body)
+      console.log(result)
+      //接口返回的数据
+      ctx.body = {msg:"借阅成功"}
+      ctx.status = 200
+    }
     
   //注销接口
   // async logout() {
