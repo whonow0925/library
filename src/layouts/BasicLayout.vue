@@ -13,7 +13,7 @@
       广告代码 真实项目中请移除
       production remove this Ads
     -->
-    <ads v-if="isProPreviewSite && !collapsed"/>
+    <ads v-if="isProPreviewSite && !collapsed" />
     <!-- Ads end -->
 
     <!-- 1.0.0+ 版本 pro-layout 提供 API，
@@ -31,7 +31,15 @@
     <template v-slot:headerContentRender>
       <div>
         <a-tooltip title="刷新页面">
-          <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="() => { $message.info('只是一个DEMO') }" />
+          <a-icon
+            type="reload"
+            style="font-size: 18px;cursor: pointer;"
+            @click="
+              () => {
+                $message.info('只是一个DEMO')
+              }
+            "
+          />
         </a-tooltip>
       </div>
     </template>
@@ -53,6 +61,7 @@
 </template>
 
 <script>
+import { asyncRouterMap } from '@/config/router.config.js'
 import { SettingDrawer, updateTheme } from '@ant-design-vue/pro-layout'
 import { i18nRender } from '@/locales'
 import { mapState } from 'vuex'
@@ -73,7 +82,7 @@ export default {
     LogoSvg,
     Ads
   },
-  data () {
+  data() {
     return {
       // preview.pro.antdv.com only use.
       isProPreviewSite: process.env.VUE_APP_PREVIEW === 'true' && process.env.NODE_ENV !== 'development',
@@ -113,18 +122,20 @@ export default {
       mainMenu: state => state.permission.addRouters
     })
   },
-  created () {
-    const routes = this.mainMenu.find(item => item.path === '/')
-    this.menus = (routes && routes.children) || []
-    // 处理侧栏收起状态
-    this.$watch('collapsed', () => {
-      this.$store.commit(SIDEBAR_TYPE, this.collapsed)
-    })
-    this.$watch('isMobile', () => {
-      this.$store.commit(TOGGLE_MOBILE_TYPE, this.isMobile)
-    })
+  created() {
+    // const routes = this.mainMenu.find(item => item.path === '/')
+    // this.menus = (routes && routes.children) || []
+    // // 处理侧栏收起状态
+    // this.$watch('collapsed', () => {
+    //   this.$store.commit(SIDEBAR_TYPE, this.collapsed)
+    // })
+    // this.$watch('isMobile', () => {
+    //   this.$store.commit(TOGGLE_MOBILE_TYPE, this.isMobile)
+    // })
+    this.menus = asyncRouterMap.find(item => item.path === '/').children
+    this.collapsed = !this.sidebarOpened
   },
-  mounted () {
+  mounted() {
     const userAgent = navigator.userAgent
     if (userAgent.indexOf('Edge') > -1) {
       this.$nextTick(() => {
@@ -143,7 +154,7 @@ export default {
   },
   methods: {
     i18nRender,
-    handleMediaQuery (val) {
+    handleMediaQuery(val) {
       this.query = val
       if (this.isMobile && !val['screen-xs']) {
         this.isMobile = false
@@ -156,10 +167,10 @@ export default {
         // this.settings.fixSiderbar = false
       }
     },
-    handleCollapse (val) {
+    handleCollapse(val) {
       this.collapsed = val
     },
-    handleSettingChange ({ type, value }) {
+    handleSettingChange({ type, value }) {
       console.log('type', type, value)
       type && (this.settings[type] = value)
       switch (type) {
@@ -181,5 +192,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "./BasicLayout.less";
+@import './BasicLayout.less';
 </style>

@@ -57,9 +57,14 @@ export default {
     login(){
       const name = this.userName
       const password = this.userPassword
-      this.Login({name,password}).then(()=>{
+      this.Login({name,password}).then(response=>{
+        console.log(response,123)
+        if(response.isAdmin == 1){
+          this.$router.push({path:'/dashboard'})
+        }else{
         this.$router.push({path:'/homePage'})
-        console.log(this.$store.getters.roles,222)
+        }
+        // console.log(this.$store.getters.roles,222)
       })
       // this.axios.post('/api/auth/login',{
       //   name:name,

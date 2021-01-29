@@ -22,7 +22,7 @@ import 'swiper/dist/css/swiper.min.css'
 
 import bootstrap from './core/bootstrap'
 import './core/lazy_use' // use lazy load components
-import './permission' // permission control
+// import './permission' // permission control
 import './utils/filter' // global filter
 import './global.less' // global style
 // import 'swiper/css/swiper.css'

@@ -181,6 +181,7 @@ export default {
     // console.log(this.$store.getters)
     if (this.$store.getters.token) {
       this.isLogin = true
+      // console.log(this.$store.state)
     }
     this.$axios
       .get('/api/book/bookRank')

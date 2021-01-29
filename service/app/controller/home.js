@@ -36,7 +36,8 @@ class HomeController extends Controller {
         result: {
           username: result.user.username,
           id: result.user.userid,
-          token: 'sadasdasda'
+          token: 'sadasdasda',
+          isAdmin:result.user.isAdmin
         }
       }
     } else {

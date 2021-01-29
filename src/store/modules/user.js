@@ -6,30 +6,34 @@ import { welcome } from '@/utils/util'
 const user = {
   state: {
     token: '',
-    name: '',
-    welcome: '',
-    avatar: '',
-    roles: [],
-    info: {}
+    username:''
+    // name: '',
+    // welcome: '',
+    // avatar: '',
+    // roles: [],
+    // info: {}
   },
 
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_NAME: (state, { name, welcome }) => {
-      state.name = name
-      state.welcome = welcome
-    },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
-    },
-    SET_INFO: (state, info) => {
-      state.info = info
+    SET_NAME:(state, username)=>{
+      state.username = username
     }
+    // SET_NAME: (state, { name, welcome }) => {
+    //   state.name = name
+    //   state.welcome = welcome
+    // },
+    // SET_AVATAR: (state, avatar) => {
+    //   state.avatar = avatar
+    // },
+    // SET_ROLES: (state, roles) => {
+    //   state.roles = roles
+    // },
+    // SET_INFO: (state, info) => {
+    //   state.info = info
+    // }
   },
 
   actions: {
@@ -38,10 +42,11 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           const result = response.result
-          console.log(response)
+          console.log(result.username)
           storage.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.token)
-          resolve()
+          commit('SET_NAME', result.username)
+          resolve(result)
         }).catch(error => {
           console.log(error, 'aaa')
           reject(error)
