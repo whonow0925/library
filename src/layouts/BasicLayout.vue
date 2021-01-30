@@ -13,7 +13,7 @@
       广告代码 真实项目中请移除
       production remove this Ads
     -->
-    <ads v-if="isProPreviewSite && !collapsed" />
+    <!-- <ads v-if="isProPreviewSite && !collapsed" /> -->
     <!-- Ads end -->
 
     <!-- 1.0.0+ 版本 pro-layout 提供 API，
@@ -21,7 +21,8 @@
     -->
     <template v-slot:menuHeaderRender>
       <div>
-        <logo-svg />
+        <!-- <logo-svg /> -->
+        <a-icon type="smile" />
         <h1>{{ title }}</h1>
       </div>
     </template>
@@ -54,7 +55,7 @@
     </template>
     <!-- custom footer / 自定义Footer -->
     <template v-slot:footerRender>
-      <global-footer />
+      <!-- <global-footer /> -->
     </template>
     <router-view />
   </pro-layout>
