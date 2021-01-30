@@ -92,9 +92,19 @@ class HomeController extends Controller {
     async borrowedBook() {
       const { ctx } = this
       const result = await ctx.service.user.borrowedBook(ctx.request.body)
-      console.log(result)
+      // console.log(result)
       //接口返回的数据
       ctx.body = {msg:"借阅成功"}
+      ctx.status = 200
+    }
+
+    //管理后台
+    //删除新闻按钮接口
+    async newsDelete(){
+      const { ctx } = this
+      const result = await ctx.service.user.newsDelete(ctx.request.body)
+      console.log(result,999);
+      ctx.body = result
       ctx.status = 200
     }
     
