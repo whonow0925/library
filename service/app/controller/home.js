@@ -103,7 +103,22 @@ class HomeController extends Controller {
     async newsDelete(){
       const { ctx } = this
       const result = await ctx.service.user.newsDelete(ctx.request.body)
-      console.log(result,999);
+      ctx.body = result
+      ctx.status = 200
+    }
+
+    //更新新闻接口
+    async newsUpdate(){
+      const { ctx } = this
+      const result = await ctx.service.user.newsUpdate(ctx.request.body)
+      ctx.body = result
+      ctx.status = 200
+    }
+
+    //新增新闻接口
+    async newsAdd(){
+      const { ctx } = this
+      const result = await ctx.service.user.newsAdd(ctx.request.body)
       ctx.body = result
       ctx.status = 200
     }

@@ -51,9 +51,20 @@ class UserService extends Service {
     return { result }
   }
 
-  async newsDelete({id}){
-    const result = await this.app.mysql.delete('news', {id})
-    return {result}
+  async newsDelete({ id }) {
+    const result = await this.app.mysql.delete('news', { id })
+    return { result }
+  }
+
+  async newsUpdate({ id, date, type, title, content }) {
+    const result = await this.app.mysql.update('news', { id, date, type, title, content })
+    return { result }
+  }
+
+  async newsAdd({ id, date, type, content, title }) {
+    const result = await this.app.mysql.insert('news', { id, date, type, content, title })
+    console.log(result, 1111)
+    return { result }
   }
 }
 

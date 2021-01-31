@@ -18,4 +18,6 @@ module.exports = app => {
 
   //管理后台接口
   router.post('/api/news/newsDelete', controller.home.newsDelete)//管理后台删除新闻接口
+  router.post('/api/news/newsUpdate', controller.home.newsUpdate)//管理后台更新新闻接口
+  router.post('/api/news/newsAdd', controller.home.newsAdd)//管理后台新增新闻接口
 };
