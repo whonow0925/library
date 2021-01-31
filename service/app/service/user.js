@@ -3,9 +3,9 @@
 const Service = require('egg').Service
 
 class UserService extends Service {
-  async addUser({ name: username, password }) {
+  async addUser({username, password ,isAdmin}) {
     // "users" 为test数据库数据表名
-    const result = await this.app.mysql.insert('user', { username, password })
+    const result = await this.app.mysql.insert('user', { username, password,isAdmin})
     return { result }
   }
 
@@ -66,6 +66,22 @@ class UserService extends Service {
     console.log(result, 1111)
     return { result }
   }
+
+  async userInfo() {
+    const result = await this.app.mysql.select('user')
+    return { result }
+  }
+
+  async userDelete({ id }) {
+    const result = await this.app.mysql.delete('user', { id })
+    return { result }
+  }
+
+  async userUpdate({ id, username, password,isAdmin }) {
+    const result = await this.app.mysql.update('user', { id, username, password,isAdmin })
+    return { result }
+  }
+
 }
 
 module.exports = UserService

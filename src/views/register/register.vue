@@ -50,12 +50,15 @@ export default {
       if (password == confirmPwd) {
         this.$axios
           .post('/api/auth/register', {
-            name: username,
-            password: password
+            username: username,
+            password: password,
+            isAdmin: 0
           })
           .then(response => {
             console.log(response)
-            if(response.data=='账号已被注册，请前往登录'){
+            if (response.data == '账号已被注册，请前往登录') {
+              this.$router.push({ path: '/login' })
+            } else {
             }
           })
           .catch(error => {

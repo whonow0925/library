@@ -20,4 +20,7 @@ module.exports = app => {
   router.post('/api/news/newsDelete', controller.home.newsDelete)//管理后台删除新闻接口
   router.post('/api/news/newsUpdate', controller.home.newsUpdate)//管理后台更新新闻接口
   router.post('/api/news/newsAdd', controller.home.newsAdd)//管理后台新增新闻接口
+  router.get('/api/user/userInfo',controller.home.userInfo);//管理后台用户管理用户信息接口
+  router.post('/api/user/userDelete', controller.home.userDelete)//管理后台删除用户接口
+  router.post('/api/user/userUpdate', controller.home.userUpdate)//管理后台更新用户信息接口
 };

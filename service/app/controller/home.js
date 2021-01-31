@@ -13,7 +13,7 @@ class HomeController extends Controller {
   async register() {
     const { ctx } = this
     const result = await ctx.service.user.find(ctx.request.body)
-    console.log(result, 'aaa')
+    // console.log(result, 'aaa')
     if (result.user) {
       ctx.body = { msg: '账号已被注册，请前往登录' }
     } else {
@@ -35,7 +35,7 @@ class HomeController extends Controller {
       ctx.body = {
         result: {
           username: result.user.username,
-          id: result.user.userid,
+          id: result.user.id,
           token: 'sadasdasda',
           isAdmin:result.user.isAdmin
         }
@@ -119,6 +119,30 @@ class HomeController extends Controller {
     async newsAdd(){
       const { ctx } = this
       const result = await ctx.service.user.newsAdd(ctx.request.body)
+      ctx.body = result
+      ctx.status = 200
+    }
+
+    //用户信息接口
+    async userInfo(){
+      const { ctx } = this
+      const result = await ctx.service.user.userInfo(ctx.request.body)
+      ctx.body = result
+      ctx.status = 200
+    }
+
+    //删除用户信息
+    async userDelete(){
+      const { ctx } = this
+      const result = await ctx.service.user.userDelete(ctx.request.body)
+      ctx.body = result
+      ctx.status = 200
+    }
+
+    //更新用户信息接口
+    async userUpdate(){
+      const { ctx } = this
+      const result = await ctx.service.user.userUpdate(ctx.request.body)
       ctx.body = result
       ctx.status = 200
     }
