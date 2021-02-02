@@ -37,7 +37,7 @@ class HomeController extends Controller {
           username: result.user.username,
           id: result.user.id,
           token: 'sadasdasda',
-          isAdmin:result.user.isAdmin
+          isAdmin: result.user.isAdmin
         }
       }
     } else {
@@ -52,7 +52,7 @@ class HomeController extends Controller {
   async searchBook() {
     const { ctx } = this
     const result = await ctx.service.user.searchBook(ctx.request.body)
-    if (result.result.length>0) {
+    if (result.result.length > 0) {
       ctx.body = result
     } else {
       ctx.body = { msg: '暂时没有找到你想要的书籍哦~' }
@@ -74,79 +74,127 @@ class HomeController extends Controller {
     const { ctx } = this
     // console.log(ctx.request,'aaa');
     const result = await ctx.service.user.bookClassify(ctx.request.body)
-    console.log(result,1111);
+    console.log(result, 1111)
     ctx.body = result
     ctx.status = 200
   }
 
-    //吉珠新闻展示接口
-    async news() {
-      const { ctx } = this
-      const result = await ctx.service.user.news()
-      // console.log(result,111);
-      ctx.body = result
-      ctx.status = 200
-    }
+  //吉珠新闻展示接口
+  async news() {
+    const { ctx } = this
+    const result = await ctx.service.user.news()
+    // console.log(result,111);
+    ctx.body = result
+    ctx.status = 200
+  }
 
-    //存储借阅用户的资料
-    async borrowedBook() {
-      const { ctx } = this
-      const result = await ctx.service.user.borrowedBook(ctx.request.body)
-      // console.log(result)
-      //接口返回的数据
-      ctx.body = {msg:"借阅成功"}
-      ctx.status = 200
-    }
+  //存储借阅用户的资料
+  async borrowedBook() {
+    const { ctx } = this
+    const result = await ctx.service.user.borrowedBook(ctx.request.body)
+    // console.log(result)
+    //接口返回的数据
+    ctx.body = { msg: '借阅成功' }
+    ctx.status = 200
+  }
 
-    //管理后台
-    //删除新闻按钮接口
-    async newsDelete(){
-      const { ctx } = this
-      const result = await ctx.service.user.newsDelete(ctx.request.body)
-      ctx.body = result
-      ctx.status = 200
-    }
+  //管理后台
+  //删除新闻按钮接口
+  async newsDelete() {
+    const { ctx } = this
+    const result = await ctx.service.user.newsDelete(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
 
-    //更新新闻接口
-    async newsUpdate(){
-      const { ctx } = this
-      const result = await ctx.service.user.newsUpdate(ctx.request.body)
-      ctx.body = result
-      ctx.status = 200
-    }
+  //更新新闻接口
+  async newsUpdate() {
+    const { ctx } = this
+    const result = await ctx.service.user.newsUpdate(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
 
-    //新增新闻接口
-    async newsAdd(){
-      const { ctx } = this
-      const result = await ctx.service.user.newsAdd(ctx.request.body)
-      ctx.body = result
-      ctx.status = 200
-    }
+  //新增新闻接口
+  async newsAdd() {
+    const { ctx } = this
+    const result = await ctx.service.user.newsAdd(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
 
-    //用户信息接口
-    async userInfo(){
-      const { ctx } = this
-      const result = await ctx.service.user.userInfo(ctx.request.body)
-      ctx.body = result
-      ctx.status = 200
-    }
+  //用户信息接口
+  async userInfo() {
+    const { ctx } = this
+    const result = await ctx.service.user.userInfo(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
 
-    //删除用户信息
-    async userDelete(){
-      const { ctx } = this
-      const result = await ctx.service.user.userDelete(ctx.request.body)
-      ctx.body = result
-      ctx.status = 200
-    }
+  //删除用户信息
+  async userDelete() {
+    const { ctx } = this
+    const result = await ctx.service.user.userDelete(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
 
-    //更新用户信息接口
-    async userUpdate(){
-      const { ctx } = this
-      const result = await ctx.service.user.userUpdate(ctx.request.body)
-      ctx.body = result
-      ctx.status = 200
-    }
-    
+  //更新用户信息接口
+  async userUpdate() {
+    const { ctx } = this
+    const result = await ctx.service.user.userUpdate(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
+
+  //删除书籍信息
+  async booksDelete() {
+    const { ctx } = this
+    const result = await ctx.service.user.booksDelete(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
+
+  //新增书籍接口
+  async booksAdd() {
+    const { ctx } = this
+    const result = await ctx.service.user.booksAdd(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
+
+  //更新书籍接口
+  async booksUpdate() {
+    const { ctx } = this
+    const result = await ctx.service.user.booksUpdate(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
+
+  //获取借阅书籍信息
+  async borrowedBooks() {
+    const { ctx } = this
+    const result = await ctx.service.user.borrowedBooks(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
+
+  //更新借阅信息接口
+  async borrowedRecordUpdate() {
+    const { ctx } = this
+    const result = await ctx.service.user.borrowedRecordUpdate(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
+
+  //删除借阅信息接口
+  async borrowedRecordDelete() {
+    const { ctx } = this
+    const result = await ctx.service.user.borrowedRecordDelete(ctx.request.body)
+    ctx.body = result
+    ctx.status = 200
+  }
+
   //注销接口
   // async logout() {
   //   const { ctx } = this;

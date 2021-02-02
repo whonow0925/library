@@ -32,8 +32,8 @@
         </a-col>
       </a-row>
     </div>
-    <div v-if="bookList[bookId]">
-      <a-modal v-model="visible" :title="`是否借阅 ${bookList[bookId].bookName}`" :footer="null">
+    <div v-if="bookList[id]">
+      <a-modal v-model="visible" :title="`是否借阅 ${bookList[id].bookName}`" :footer="null">
         <a-form :form="form" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit">
           <a-form-item label="用户名">
             <a-input
@@ -92,7 +92,7 @@ export default {
   },
   data() {
     return {
-      bookId: 1,
+      id: 1,
       formLayout: 'horizontal',
       form: this.$form.createForm(this, { name: 'coordinated' }),
       visible: false,
@@ -196,12 +196,12 @@ export default {
     toDetail(item, index) {
       if (this.isLogin) {
         if (item.type == '在线阅读') {
-          this.$router.push({ path: '/bookDetail', query: { id: item.bookId, bookName: item.bookName } })
+          this.$router.push({ path: '/bookDetail', query: { id: item.id, bookName: item.bookName } })
         } else if (item.type == '借阅') {
           console.log(this.isLogin, 111)
           this.borrowedTime = []
           this.visible = true
-          this.bookId = index
+          this.id = index
           this.bookName = item.bookName
         }
       } else {

@@ -27,13 +27,13 @@ export default {
   data() {
     return {
       isPlaying: false,
-      bookId: '',
+      id: '',
       bookName: '',
       book: []
     }
   },
   mounted() {
-    this.bookId = this.$route.query.id
+    this.id = this.$route.query.id
     this.bookName = this.$route.query.bookName
     this.$axios
       .post('/api/book/searchBook', {

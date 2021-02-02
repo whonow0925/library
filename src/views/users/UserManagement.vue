@@ -1,12 +1,8 @@
 <template>
   <div class="UserManagement">
     <a-table v-if="data" :columns="columns" :data-source="data" bordered rowKey="id">
-      <template slot-scope="text">
-        <div>
-          <div>
-            {{ text }}
-          </div>
-        </div>
+      <template slot="isAdmin" slot-scope="record">
+        <span>{{ statusMap[record] }}</span>
       </template>
       <!-- <template slot="operation" slot-scope="text, record"> -->
       <div slot="operation" class="operation" slot-scope="text, record">
@@ -97,12 +93,17 @@ const columns = [
     scopedSlots: { customRender: 'operation' }
   }
 ]
+const statusMap ={
+  '0':'用户',
+  '1':'管理员'
+}
 export default {
   mounted() {
     this.showNewsRecord()
   },
   data() {
     return {
+      statusMap,
       isDisabled: false,
       //modal 的标题
       title: '',

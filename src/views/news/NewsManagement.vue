@@ -1,13 +1,14 @@
 <template>
   <div class="NewsManagement">
     <a-button type="primary" class="addNews" @click="addNews">新增</a-button>
-    <a-table v-if="data" :columns="columns" :data-source="data" bordered rowKey="id">
-      <template slot-scope="text">
-        <div>
-          <div>
-            {{ text }}
-          </div>
-        </div>
+    <a-table class="newsTable"
+             v-if="data"
+             :columns="columns"
+             :data-source="data"
+             bordered
+             rowKey="id">
+      <template slot="content" slot-scope="record">
+        <span>{{ record.length > 40 ? record.slice(0, 40) + '...' : record }}</span>
       </template>
       <!-- <template slot="operation" slot-scope="text, record"> -->
       <div slot="operation" class="operation" slot-scope="text, record">
@@ -183,7 +184,7 @@ export default {
     },
     handleCancel(e) {
       this.visible = false
-      this.currentData=''
+      this.currentData = ''
     },
     //表单
     handleSubmit(e) {
@@ -211,15 +212,15 @@ export default {
               .catch(error => {
                 console.log(error)
               })
-          }else if(this.title == '新增'){
-            console.log(values,123456)
+          } else if (this.title == '新增') {
+            console.log(values, 123456)
             this.$axios
               .post('/api/news/newsAdd', {
                 id: values.id,
                 date: values.date,
                 type: values.type,
                 content: values.content,
-                title: values.title    
+                title: values.title
               })
               .then(response => {
                 console.log(response, 22111)

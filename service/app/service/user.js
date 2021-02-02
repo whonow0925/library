@@ -3,9 +3,9 @@
 const Service = require('egg').Service
 
 class UserService extends Service {
-  async addUser({username, password ,isAdmin}) {
+  async addUser({ username, password, isAdmin }) {
     // "users" 为test数据库数据表名
-    const result = await this.app.mysql.insert('user', { username, password,isAdmin})
+    const result = await this.app.mysql.insert('user', { username, password, isAdmin })
     return { result }
   }
 
@@ -77,11 +77,65 @@ class UserService extends Service {
     return { result }
   }
 
-  async userUpdate({ id, username, password,isAdmin }) {
-    const result = await this.app.mysql.update('user', { id, username, password,isAdmin })
+  async userUpdate({ id, username, password, isAdmin }) {
+    const result = await this.app.mysql.update('user', { id, username, password, isAdmin })
     return { result }
   }
 
+  async booksDelete({ id }) {
+    const result = await this.app.mysql.delete('bookrank', { id })
+    return { result }
+  }
+
+  async booksAdd({ id, bookName, writer, describe, press, content, type, bookType }) {
+    const result = await this.app.mysql.insert('bookrank', {
+      id,
+      bookName,
+      writer,
+      describe,
+      press,
+      content,
+      type,
+      bookType
+    })
+    return { result }
+  }
+
+  async booksUpdate({ id, bookName, writer, describe, press, content, type, bookType }) {
+    const result = await this.app.mysql.update('bookrank', {
+      id,
+      bookName,
+      writer,
+      describe,
+      press,
+      content,
+      type,
+      bookType
+    })
+    return { result }
+  }
+
+  async borrowedBooks() {
+    const result = await this.app.mysql.select('borrowedrecord')
+    return { result }
+  }
+
+  async borrowedRecordUpdate({ id, userName, phone, startTime, endTime, borrowedBookName }) {
+    const result = await this.app.mysql.update('borrowedrecord', {
+      id,
+      userName,
+      phone,
+      startTime,
+      endTime,
+      borrowedBookName
+    })
+    return { result }
+  }
+
+  async borrowedRecordDelete({ id }) {
+    const result = await this.app.mysql.delete('borrowedrecord', { id })
+    return { result }
+  }
 }
 
 module.exports = UserService
