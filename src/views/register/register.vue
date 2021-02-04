@@ -57,8 +57,11 @@ export default {
           .then(response => {
             console.log(response)
             if (response.data == '账号已被注册，请前往登录') {
+              this.$message.warning('账号已被注册，请前往登录')
               this.$router.push({ path: '/login' })
             } else {
+              this.$message.success('你已经注册成功！请前往登录')
+              this.$router.push({ path: '/login' })
             }
           })
           .catch(error => {

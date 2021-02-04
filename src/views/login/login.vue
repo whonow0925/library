@@ -6,19 +6,12 @@
         <div class="userName">
           <span style="color:red;marging-right:-5px">*</span>
           <span class="name">用户名：</span>
-          <a-input 
-            v-model="userName"
-            class="nameInput" 
-            placeholder="请输入用户名/学号"
-            allow-clear />
+          <a-input v-model="userName" class="nameInput" placeholder="请输入用户名/学号" allow-clear />
         </div>
         <div class="userPassword">
           <span style="color:red">*</span>
           <span class="pwd">密码：</span>
-          <a-input-password 
-            v-model="userPassword"
-            class="passwordInput" 
-            placeholder="请输入密码(英文和数字)" />
+          <a-input-password v-model="userPassword" class="passwordInput" placeholder="请输入密码(英文和数字)" />
         </div>
       </div>
       <div class="loginButton">
@@ -34,7 +27,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -54,28 +47,40 @@ export default {
     //   } else {
     //   }
     // },
-    login(){
-      const name = this.userName
+    login() {
+      const username = this.userName
       const password = this.userPassword
-      this.Login({name,password}).then(response=>{
-        console.log(response,123)
-        if(response.isAdmin == 1){
-          this.$router.push({path:'/dashboard'})
-        }else{
-        this.$router.push({path:'/homePage'})
+      this.Login({ username, password }).then(response => {
+        console.log(response, 123)
+        if (response.result && response.result.isAdmin == 1) {
+          this.$router.push({ path: '/dashboard' })
+        } else if (response.result && response.result.isAdmin == 0) {
+          this.$router.push({ path: '/homePage' })
+        } else {
+          this.$message.warning(response.error.msg)
         }
-        // console.log(this.$store.getters.roles,222)
+        console.log(this.$store.getters.roles, 222)
       })
-      // this.axios.post('/api/auth/login',{
-      //   name:name,
-      //   password:password
-      // })
-      // .then(response =>{
-      //   console.log(response)
-      // })
-      // .catch(error=>{
-      //   console.log(error)
-      // })
+      // this.$axios
+      //   .post('/api/auth/login', {
+      //     username: username,
+      //     password: password
+      //   })
+      //   .then(response => {
+      //     if (response.data.result) {
+      //       localStorage.setItem('token',response.data.result.token)
+      //       if (response.data.result.isAdmin == 1) {
+      //         this.$router.push({ path: '/dashboard' })
+      //       } else {
+      //         this.$router.push({ path: '/homePage' })
+      //       }
+      //     } else {
+      //       this.$message.warning(response.data.error.msg)
+      //     }
+      //   })
+      //   .catch(error => {
+      //     console.log(error)
+      //   })
     }
   }
 }
@@ -128,7 +133,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        .name{
+        .name {
           width: 100px;
         }
       }
@@ -137,7 +142,7 @@ export default {
         justify-content: center;
         align-items: center;
         margin-top: 20px;
-        .pwd{
+        .pwd {
           width: 100px;
         }
       }

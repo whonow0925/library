@@ -12,6 +12,11 @@
         续借
       </a-button>
     </div>
+    <div class="logout" :style="`visibility:${isLogin?'visible':'hidden'}`">
+      <a-button type="dashed" @click="logout">
+        退出登录
+      </a-button>
+    </div>
     <a-menu v-model="current" mode="horizontal">
       <a-menu-item key="mail" @click="goHome"> <a-icon type="bank" />首页 </a-menu-item>
       <a-menu-item key="app">
@@ -68,6 +73,11 @@ export default {
     register() {
       this.$router.push({ path: '/register' })
     },
+    logout(){
+      localStorage.clear()
+      this.$router.push({ path: '/login' })
+      this.$message.success('已成功退出登录!')
+    },
     goAbout() {
       this.$router.push({
         path: '/detailPage',
@@ -101,6 +111,15 @@ export default {
     justify-content: center;
     align-items: center;
     margin: 10px;
+  }
+  .logout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // margin: 10px;
+    position: fixed;
+    left: 10px;
+    top: 10px;
   }
 }
 </style>

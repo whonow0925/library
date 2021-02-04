@@ -18,7 +18,7 @@ class HomeController extends Controller {
       ctx.body = { msg: '账号已被注册，请前往登录' }
     } else {
       console.log(ctx.request, 111)
-      const result = await ctx.service.user.addUser(ctx.request)
+      const result = await ctx.service.user.addUser(ctx.request.body)
       //接口返回的数据
       ctx.body = { msg: '账号注册成功' }
     }
@@ -28,16 +28,24 @@ class HomeController extends Controller {
   //登录接口
   async login() {
     const { ctx } = this
-    const result = await ctx.service.user.find(ctx.request.body)
-    console.log(result)
-    //接口返回的数据
+    const result = await ctx.service.user.userNameFind(ctx.request.body)
+    console.log(result,1111)
     if (result.user) {
-      ctx.body = {
-        result: {
-          username: result.user.username,
-          id: result.user.id,
-          token: 'sadasdasda',
-          isAdmin: result.user.isAdmin
+      const result = await ctx.service.user.find(ctx.request.body)
+      //接口返回的数据
+      console.log(result,2222);
+      if (result.result) {
+        ctx.body = {
+          result: {
+            username: result.result.username,
+            id: result.result.id,
+            token: 'sadasdasda',
+            isAdmin: result.result.isAdmin
+          }
+        }
+      }else{
+        ctx.body = {
+          error: { msg: '密码不正确，请再次输入！' }
         }
       }
     } else {
