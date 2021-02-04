@@ -37,7 +37,8 @@
         <a-form :form="form" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit">
           <a-form-item label="用户名">
             <a-input
-              v-decorator="['userName', { rules: [{ required: true, message: 'Please input your userName!' }] }]"
+              disabled
+              v-decorator="['userName', { rules: [{ required: true, message: 'Please input your userName!' }], initialValue: this.userName }]"
             />
           </a-form-item>
           <a-form-item label="电话号码">
@@ -74,9 +75,13 @@ export default {
     // Navigation
   },
   mounted() {
-    // console.log(this.$store.getters,9999)
-    if (this.$store.getters.token) {
+    console.log(this.$store.state.user,9999)
+    // if (this.$store.getters.token) {
+    //   this.isLogin = true
+    // }
+    if (this.$store.state.user) {
       this.isLogin = true
+      this.userName = this.$store.state.user.username
     }
     this.$axios
       .get('/api/book/bookRank')
